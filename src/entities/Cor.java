@@ -1,6 +1,6 @@
 package entities;
 
-public enum Color {
+public enum Cor {
     RED,
     BLUE,
     GREEN,

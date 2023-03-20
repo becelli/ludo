@@ -1,10 +1,10 @@
 package entities;
 
-public class Board {
+public class Tabuleiro {
     private final int size = 52;
     private Peao[] casas = new Peao[size];
 
-    public Board(Peao[] azuis, Peao[] vermelhos) {
+    public Tabuleiro(Peao[] azuis, Peao[] vermelhos) {
         casas[0] = azuis[0];
         casas[1] = azuis[1];
         casas[2] = azuis[2];

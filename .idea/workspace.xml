@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc9628f9-e8e9-4cc2-aa37-8b35d05c34a8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/entities/Jogo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/entities/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Peao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Tabuleiro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Cor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Dice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Dado.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Jogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Jogo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Peao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Peao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +74,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1679311413253</updated>
-      <workItem from="1679342193302" duration="6125000" />
+      <workItem from="1679342193302" duration="6818000" />
     </task>
     <servers />
   </component>
