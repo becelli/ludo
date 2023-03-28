@@ -5,13 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc9628f9-e8e9-4cc2-aa37-8b35d05c34a8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/model/BoardSquares.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Pawn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Square.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Tabuleiro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Cor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Dice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Dado.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Jogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Jogo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/Peao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Peao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Cor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Color.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Dado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Dice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Jogo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Peao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Tabuleiro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Board.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +50,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "last_opened_file_path": "C:/Users/danie/OneDrive/Documentos/Unesp/Introdução a Tecnologia Java/Aula 02/ludo",
+    "last_opened_file_path": "/home/becelli/dev/unesp/ludo",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -53,13 +58,13 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="entities.Main" />
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ludo" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -75,6 +80,8 @@
       <option name="presentableId" value="Default" />
       <updated>1679311413253</updated>
       <workItem from="1679342193302" duration="6818000" />
+      <workItem from="1679957699463" duration="516000" />
+      <workItem from="1679958228894" duration="6253000" />
     </task>
     <servers />
   </component>
