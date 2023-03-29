@@ -1,10 +1,10 @@
 package model;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
 
 public class Board {
     private BoardSquares boardSquares = new BoardSquares();
-    private ArrayList<Square> greenSquares = new ArrayList<Square>(7);
-    private ArrayList<Square> blueSquares = new ArrayList<Square>(7);
     private Pawn[] greenBase = new Pawn[4];
     private Pawn[] blueBase = new Pawn[4];
     private Pawn[] pawns = new Pawn[16];
@@ -22,17 +22,10 @@ public class Board {
             return;
         }
 
-        Square currentSquare = boardSquares.getWherePawnIs(pawnIndex);
-        int currentSquareIndex = boardSquares.indexOf(currentSquare);
-
-        // Get the next square
+        Pawn pawn = pawns[pawnIndex];
+        Square currentSquare = boardSquares.getWherePawnIs(pawn);
         Color pawnColor = pawns[pawnIndex].getColor();
-        ArrayList<Square> finalSquares = null;
-        switch (pawnColor) {
-            case GREEN -> finalSquares = greenSquares;
-            case BLUE -> finalSquares = blueSquares;
-        }
-        Square nextSquare = boardSquares.getNextSquare(currentSquareIndex, diceValue, pawnColor, finalSquares);
+        Square nextSquare = boardSquares.getNextSquare(currentSquare, diceValue, pawnColor);
 
 
         // Verify if the next square is special
@@ -51,7 +44,9 @@ public class Board {
             // Move to square and send enemy back to base.
             Pawn enemy = nextSquare.getPawns().stream().filter(p -> p.getColor() != pawns[pawnIndex].getColor()).findFirst().get();
             nextSquare.addPawn(pawns[pawnIndex]);
-            currentSquare.removePawn(pawns[enemy.getIndex()]);
+            currentSquare.removePawn(pawns[pawnIndex]);
+            nextSquare.removePawn(enemy);
+
             switch (enemy.getColor()) {
                 case BLUE -> blueBase[enemy.getIndex() % 4] = enemy;
                 case GREEN -> greenBase[enemy.getIndex() % 4] = enemy;
@@ -64,13 +59,20 @@ public class Board {
     public void addPawnToBoard(int pawnIndex) {
         Pawn pawn = pawns[pawnIndex];
         boardSquares.addPawnToStart(pawn);
+        switch (pawn.getColor()) {
+            case GREEN -> greenBase[pawn.getIndex() % 4] = null;
+            case BLUE -> blueBase[pawn.getIndex() % 4] = null;
+        }
     }
     public Color getWinner() {
-        if (greenSquares.get(6).getPawns().size() == 4) {
-            return Color.GREEN;
-        }
-        if (blueSquares.get(6).getPawns().size() == 4) {
-            return Color.BLUE;
+        EnumMap<Color, ArrayList<Square>> finalSquares = boardSquares.getFinalSquares();
+        for (Color color : Color.values()) {
+            ArrayList<Square> squares = finalSquares.get(color);
+            int lastSquareIndex = squares.size() - 1;
+            Square lastSquare = squares.get(lastSquareIndex);
+            if (lastSquare.getPawns().size() == 4) {
+                return color;
+            }
         }
         return null;
     }

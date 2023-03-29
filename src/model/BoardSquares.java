@@ -1,16 +1,23 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 
 public class BoardSquares
 {
-    private static final int DEFAULT_SIZE = 52;
+    private static final Integer DEFAULT_SIZE = 52;
+    private static final Integer DEFAULT_FINAL_SQUARES_SIZE = 6;
+    private static final Integer GREEN_START = 0;
+    private static final Integer GREEN_END = 50;
+    private static final Integer BLUE_END = 24;
+    private static final Integer BLUE_START = 26;
     private ArrayList<Square> squares = new ArrayList<Square>(DEFAULT_SIZE);
-    private static int greenStart = 0;
-    private static int greenEnd = 50;
-    private static int blueStart = 26;
-    private static int blueEnd = 24;
+    private EnumMap<Color, ArrayList<Square>> finalSquares = new EnumMap<Color, ArrayList<Square>>(Color.class);
     public BoardSquares() {
+        for (Color color : Color.values()) {
+            finalSquares.put(color, new ArrayList<Square>(DEFAULT_FINAL_SQUARES_SIZE));
+        }
+
         for (int i = 0; i < DEFAULT_SIZE; i++) {
             boolean isStart = i % 13 == 0;
             boolean isStar = i % 13 == 6;
@@ -18,48 +25,57 @@ public class BoardSquares
             squares.add(new Square(isSpecial));
         }
     }
-    public Square getWherePawnIs(int pawnIndex) {
-        return squares.stream().filter(square -> square.getPawns().contains(pawnIndex)).findFirst().get();
-    }
-    public int indexOf(Square square) {
-        return squares.indexOf(square);
+
+    public Square getWherePawnIs(Pawn pawn) {
+        Square pawnSquare = squares.stream().filter(square -> square.getPawns().contains(pawn)).findFirst().orElse(null);
+        if (pawnSquare == null) {
+            pawnSquare = finalSquares.get(pawn.getColor()).stream().filter(square -> square.getPawns().contains(pawn)).findFirst().orElse(null);
+        }
+        return pawnSquare;
     }
     public Square get(int index) {
         return squares.get(index);
     }
     public void addPawnToStart(Pawn pawn) {
         switch (pawn.getColor()) {
-            case GREEN -> squares.get(greenStart).addPawn(pawn);
-            case BLUE -> squares.get(blueStart).addPawn(pawn);
+            case GREEN -> squares.get(GREEN_START).addPawn(pawn);
+            case BLUE -> squares.get(BLUE_START).addPawn(pawn);
             default -> throw new IllegalArgumentException("Invalid color");
         }
     }
-    public Square getNextSquare(int currentSquareIndex, int diceValue, Color pawnColor, ArrayList<Square> finalSquares) {
-        int nextSquareIndex = currentSquareIndex + diceValue;
+    public EnumMap<Color, ArrayList<Square>> getFinalSquares() {
+        return finalSquares;
+    }
+    public Square getNextSquare(Square currentSquare, int diceValue, Color pawnColor) {
+        boolean isInFinalSquares = finalSquares.get(pawnColor).contains(currentSquare);
+        if (isInFinalSquares) {
+            int nextIndex = finalSquares.get(pawnColor).indexOf(currentSquare) + diceValue;
+            return (nextIndex < DEFAULT_FINAL_SQUARES_SIZE) ? finalSquares.get(pawnColor).get(nextIndex) : null;
+        }
+
+        int nextSquareUnboundedIndex = (squares.indexOf(currentSquare) + diceValue);
         boolean hasPassedFinalSquare = false;
         int difference = 0;
 
         switch (pawnColor) {
             case GREEN -> {
-                if (nextSquareIndex > greenEnd) {
+                if (nextSquareUnboundedIndex > GREEN_END) {
                     hasPassedFinalSquare = true;
-                    difference = nextSquareIndex - greenEnd;
+                    difference = nextSquareUnboundedIndex - GREEN_END;
                 }
             }
             case BLUE -> {
-                if (nextSquareIndex > blueEnd) {
+                if (nextSquareUnboundedIndex > BLUE_END) {
                     hasPassedFinalSquare = true;
-                    difference = nextSquareIndex - blueEnd;
+                    difference = nextSquareUnboundedIndex - BLUE_END;
                 }
             }
         }
-
         if (hasPassedFinalSquare) {
-            // Todo: verify if this is correct (+ or - 1)
-            int index = finalSquares.size() - difference;
-            return finalSquares.get(index);
+            return finalSquares.get(pawnColor).get(difference - 1);
         } else {
-            return squares.get(nextSquareIndex);
+            int boundedIndex = nextSquareUnboundedIndex % DEFAULT_SIZE;
+            return squares.get(boundedIndex);
         }
     }
 }
