@@ -71,6 +71,8 @@ public class MainWindow extends javax.swing.JFrame {
         mainTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 1000));
+        setResizable(false);
 
         mainTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,8 +104,9 @@ public class MainWindow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        mainTable.setPreferredSize(new java.awt.Dimension(800, 300));
+        mainTable.setPreferredSize(new java.awt.Dimension(800, 800));
         mainTable.setRequestFocusEnabled(false);
+        mainTable.setShowGrid(true);
         jScrollPane1.setViewportView(mainTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
