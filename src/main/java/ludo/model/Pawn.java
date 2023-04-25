@@ -1,4 +1,4 @@
-package model;
+package ludo.model;
 
 public class Pawn {
     private final Color color;

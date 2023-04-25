@@ -1,4 +1,4 @@
-package model;
+package ludo.model;
 
 public enum Color {
 //    RED,

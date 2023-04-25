@@ -1,4 +1,4 @@
-package model;
+package ludo.model;
 
 public class Dice {
     public static int roll() {

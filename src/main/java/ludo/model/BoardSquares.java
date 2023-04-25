@@ -1,4 +1,4 @@
-package model;
+package ludo.model;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
