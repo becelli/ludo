@@ -9,6 +9,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
-        <exec.mainClass>ludo.Main</exec.mainClass>
+        <exec.mainClass>ludo.view.MainWindow</exec.mainClass>
     </properties>
 </project>
