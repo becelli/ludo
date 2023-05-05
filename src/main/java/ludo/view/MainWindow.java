@@ -79,32 +79,20 @@ public class MainWindow extends javax.swing.JFrame {
                 jPanel1.add(square);
             }
         }
-
-        // Gambiarresco: dá pra melhorar com estrutura de dados, mas tá ok assim
-        // Get square from grid position (7, 7)
-        square = getSquare(7, 7);
-        square.setBorder(0, 0, 0, 0);
-        // (7, 6)
-        square = getSquare(7, 6);
-        square.setBorder(0, 1, 0, 0);
-        // (6, 7)
-        square = getSquare(6, 7);
-        square.setBorder(1, 0, 0, 0);
-        // (6, 8)
-        square = getSquare(6, 8);
-        square.setBorder(1, 0, 0, 0);
-        // (7, 8)
-        square = getSquare(7, 8);
-        square.setBorder(0, 0, 0, 0);
-        // (8, 6)
-        square = getSquare(8, 6);
-        square.setBorder(0, 1, 0, 0);
-        // (8, 7)
-        square = getSquare(8, 7);
-        square.setBorder(0, 0, 0, 0);
-        // (8, 8)
-        square = getSquare(8, 8);
-        square.setBorder(0, 0, 0, 0);
+        
+        // Loop through the 9 squares in the middle
+        for(int i = 6; i <= 8; i++) {
+            for(int j = 6; j <= 8; j++) {
+                square = getSquare(i, j);
+                top = 0;
+                left = 0;
+                // if it's the top of the square, it has a top border
+                if(i == 6) top = 1;
+                // if it's the left of the square, it has a left border
+                if(j == 6) left = 1;
+                square.setBorder(top, left, 0, 0);
+            }
+        }
     }
 
     /**
