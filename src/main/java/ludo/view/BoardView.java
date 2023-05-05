@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import ludo.model.Color;
+
 public class BoardView extends JPanel {
     private BufferedImage backgroundImage;
 
@@ -14,6 +16,7 @@ public class BoardView extends JPanel {
     }
 
     public BoardView(File imageFile) {
+        // Setando background
         try {
             backgroundImage = ImageIO.read(imageFile);
         } catch (Exception ex) {
@@ -62,15 +65,26 @@ public class BoardView extends JPanel {
 
         // Quadrados superiores esquerdos das casas
         int[] valores = {2, 11};
+        int c = 0; // contador para Enum da cor
+        Color color;
         // casas são (2, 2), (2, 11), (11, 2), (11, 11)
         for(int i = 0; i < 2; i++) {
             for(int j = 0; j < 2; j++) {
+                // Cor para colocar os peões
+                color = Color.values()[c++];
+                square = getSquare(valores[i], valores[j]);
+                // adiciona peão
+                square.addPawn(color);
                 square = getSquare(valores[i] + 1, valores[j]);
                 square.setBorder(0, 1, 0, 0);
+                // adiciona peão, remove bordas
+                square.addPawn(color);
                 square = getSquare(valores[i], valores[j] + 1);
                 square.setBorder(1, 0, 0, 0);
+                square.addPawn(color);
                 square = getSquare(valores[i] + 1, valores[j] + 1);
                 square.setBorder(0, 0, 0, 0);
+                square.addPawn(color);
             }
         }
     }
