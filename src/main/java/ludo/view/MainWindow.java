@@ -4,6 +4,8 @@
  */
 package ludo.view;
 
+import ludo.model.Square;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -44,11 +46,65 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    private SquareView getSquare(int x, int y) {
+        return (SquareView) jPanel1.getComponent(x * 15 + y);
+    }
+
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+        // Insert the squares into the 15x15 grid
+        int top, left, bottom, right;
+        SquareView square;
+        for(int i = 0; i < 15; i++) {
+            for(int j = 0; j < 15; j++) {
+                square = new SquareView();
+
+                top =  1;
+                left = 1;
+                bottom = 0;
+                right = 0;
+                // Set borders
+                if(i == 14) {
+                    bottom = 1;
+                }
+
+                if(j == 14) {
+                    right = 1;
+                }
+
+                square.setBorder(top, left, bottom, right);
+                jPanel1.add(square);
+            }
+        }
+
+        // Gambiarresco: dá pra melhorar com estrutura de dados, mas tá ok assim
+        // Get square from grid position (7, 7)
+        square = getSquare(7, 7);
+        square.setBorder(0, 0, 0, 0);
+        // (7, 6)
+        square = getSquare(7, 6);
+        square.setBorder(0, 1, 0, 0);
+        // (6, 7)
+        square = getSquare(6, 7);
+        square.setBorder(1, 0, 0, 0);
+        // (6, 8)
+        square = getSquare(6, 8);
+        square.setBorder(1, 0, 0, 0);
+        // (7, 8)
+        square = getSquare(7, 8);
+        square.setBorder(0, 0, 0, 0);
+        // (8, 6)
+        square = getSquare(8, 6);
+        square.setBorder(0, 1, 0, 0);
+        // (8, 7)
+        square = getSquare(8, 7);
+        square.setBorder(0, 0, 0, 0);
+        // (8, 8)
+        square = getSquare(8, 8);
+        square.setBorder(0, 0, 0, 0);
     }
 
     /**
