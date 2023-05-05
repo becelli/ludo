@@ -50,11 +50,7 @@ public class MainWindow extends javax.swing.JFrame {
         return (SquareView) jPanel1.getComponent(x * 15 + y);
     }
 
-    /**
-     * Creates new form MainWindow
-     */
-    public MainWindow() {
-        initComponents();
+    private void createBoardView() {
         // Insert the squares into the 15x15 grid
         int top, left, bottom, right;
         SquareView square;
@@ -79,7 +75,7 @@ public class MainWindow extends javax.swing.JFrame {
                 jPanel1.add(square);
             }
         }
-        
+
         // Loop through the 9 squares in the middle
         for(int i = 6; i <= 8; i++) {
             for(int j = 6; j <= 8; j++) {
@@ -93,6 +89,28 @@ public class MainWindow extends javax.swing.JFrame {
                 square.setBorder(top, left, 0, 0);
             }
         }
+
+        // Quadrados superiores esquerdos das casas
+        int[] valores = {2, 11};
+        // casas são (2, 2), (2, 11), (11, 2), (11, 11)
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < 2; j++) {
+                square = getSquare(valores[i] + 1, valores[j]);
+                square.setBorder(0, 1, 0, 0);
+                square = getSquare(valores[i], valores[j] + 1);
+                square.setBorder(1, 0, 0, 0);
+                square = getSquare(valores[i] + 1, valores[j] + 1);
+                square.setBorder(0, 0, 0, 0);
+            }
+        }
+    }
+
+    /**
+     * Creates new form MainWindow
+     */
+    public MainWindow() {
+        initComponents();
+        createBoardView();
     }
 
     /**
