@@ -1,4 +1,5 @@
 package ludo;
+
 import ludo.model.Dice;
 
 public class Main {

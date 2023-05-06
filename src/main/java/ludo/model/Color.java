@@ -1,8 +1,5 @@
 package ludo.model;
 
 public enum Color {
-    BLUE,
-    RED,
-    YELLOW,
-    GREEN
+    BLUE, RED, YELLOW, GREEN
 }
