@@ -1,26 +1,0 @@
-
-C
-java:S1604h"(Make this anonymous inner class a lambda(¨í¡§úÿÿÿÿ
-x
-java:S1450p"VRemove the "jPanel1" field and declare it as a local variable in the relevant methods.(´œ½ÿÿÿÿÿ8Ûó–Îş0
-E
-java:S1197O"*Move the array designators [] to the type.(¡şÏÖøÿÿÿÿ
-Z
-java:S2147^"DCombine this catch with the one at line 92, which has the same body.(¨¦Š½
-Z
-java:S2147`"DCombine this catch with the one at line 92, which has the same body.(ã€ 
-Y
-java:S2147b"DCombine this catch with the one at line 92, which has the same body.(ñÎ¯%
-P
-java:S1128".Remove this unused import 'ludo.model.Square'.(òŠ×ùÿÿÿÿ8‚¼šÏş0
-O
-java:S1128	"2Remove this unused import 'javax.imageio.ImageIO'.(‘çÔû8ƒ¼šÏş0
-J
-java:S1128
-"(Remove this unused import 'javax.swing'.(Ìí¿Üüÿÿÿÿ8ƒ¼šÏş0
-i
-java:S1128"GRemove this unused import 'javax.swing.table.DefaultTableCellRenderer'.(ÈĞ“ìşÿÿÿÿ8„¼šÏş0
-B
-java:S1128"%Remove this unused import 'java.awt'.(ï´µ©8„¼šÏş0
-[
-java:S1128"9Remove this unused import 'java.awt.image.BufferedImage'.(×íĞ‡şÿÿÿÿ8„¼šÏş0

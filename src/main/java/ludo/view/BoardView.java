@@ -87,6 +87,25 @@ public class BoardView extends JPanel {
                 square.addPawn(color);
             }
         }
+
+        // Teste: adiciona peão vermelho na casa  (é pra zerar e colocar um, e apenas um, novo peão vermelho)
+        /*square = getSquare(2, 2);
+        square.addPawn(Color.RED);*/
+
+        // Teste: adiciona peão vermelho na casa (2, 11) (é pra ficar dois)
+        /*square = getSquare(2, 11);
+        square.addPawn(Color.RED);*/
+
+        // Casas especiais
+        
+    }
+
+    // Não dou acesso ao removePawn nem crio um "movePawn" justamente para prevenir cagada.
+    // Quando um peão de cor diferentee for  até uma casa normal, basta adicionar o peão que vai ser removido
+    // na sua casa original, e adicionar o novo peão na casa de destino.
+    public void addPawn(int x, int y, Color color) {
+        SquareView square = getSquare(x, y);
+        square.addPawn(color);
     }
 
     @Override

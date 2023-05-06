@@ -35,7 +35,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         // Carrega imagem
-        File img = new File("ludo.png");
+        File img = new File("img/ludo.png");
         jPanel1 = new BoardView(img);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
