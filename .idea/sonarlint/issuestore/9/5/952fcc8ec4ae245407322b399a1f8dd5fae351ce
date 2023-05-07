@@ -1,0 +1,5 @@
+
+x
+java:S1319"bThe type of "pawns" should be an interface such as "Map" rather than the implementation "EnumMap".(ÆŽÆ›
+—
+java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(­¼ßü
