@@ -1,6 +1,7 @@
 package ludo.view;
 import java.io.File;
 import ludo.controller.GameController;
+import ludo.socket.*;
 
 import javax.swing.*;
 
@@ -142,6 +143,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serHostMenuItemActionPerformed
         // TODO add your handling code here:
+        String localIP;
+        localIP = Server.getNetworkIP();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Seu IP local é: ");
+        sb.append(localIP);
+        JOptionPane.showMessageDialog(this, sb.toString(), "Seu IP", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_serHostMenuItemActionPerformed
 
     private void sobreMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sobreMenuItemActionPerformed
