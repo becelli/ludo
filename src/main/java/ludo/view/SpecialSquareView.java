@@ -25,6 +25,8 @@ public class SpecialSquareView extends SquareView {
 
     @Override
     public void addPawn(Color color) {
+        this.pawnCount.put(color, this.pawnCount.get(color) + 1);
+        this.redraw();
     }
 
     @Override

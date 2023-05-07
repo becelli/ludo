@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 
@@ -32,6 +33,8 @@ public class BoardView extends JPanel {
     private SquareView[][] baseSquares = new SquareView[4][4];
     private SquareView[] normalSquares = new SquareView[52];
     private SquareView[][] finalSquares = new SquareView[4][6];
+
+    private EnumMap<Color, String[]> currentState = new EnumMap<>(Color.class);
 
     private int coordToIndex(int x, int y) {
         return x * 15 + y;
@@ -225,21 +228,63 @@ public class BoardView extends JPanel {
         }
 
         buildLookupTables();
+        currentState.put(Color.BLUE, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.YELLOW, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
+
+        EnumMap<Color, String[]> teste = new EnumMap<>(Color.class);
+        teste.put(Color.BLUE, new String[]{"N2", "B2", "B3", "B4"});
+        teste.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
+        teste.put(Color.YELLOW, new String[]{"B1", "B2", "B3", "B4"});
+        teste.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
+
+        updateBoard(teste);
     }
 
-    public void addPawn(int x, int y, Color color) {
-        SquareView square = getSquare(x, y);
-        square.addPawn(color);
+    private SquareView codeToSquare(Color color, String code) {
+        String tipo = code.substring(0, 1);
+        // Resto da string é um índice
+        int index = Integer.parseInt(code.substring(1)) - 1;
+        if(tipo.equals("N")) System.out.println(index);
+        return switch (tipo) {
+            case "B" -> baseSquares[color.ordinal()][index];
+            case "N" -> normalSquares[index + 1];
+            case "F" -> finalSquares[color.ordinal()][index];
+            default -> null;
+        };
     }
 
-    // Muito cuidado com o removePawn.
-    // Quando um peão de cor diferentee for  até uma casa normal, basta adicionar o peão que vai ser removido
-    // na sua casa original, e adicionar o novo peão na casa de destino.
-    // removePawn é apenas para tirar um peão, de uma mesma cor, de uma casa e colocar em outra
-    // Ex.: para adicionar um peão vermelho na casa (x, y), onde já há um peão verde, você dá dois addPawns: um do vermelho em (x,y) e um do verde na base
-    public void removePawn(int x, int y) {
-        SquareView square = getSquare(x, y);
-        square.removePawn();
+    private void updateBoard(EnumMap<Color, String[]> newState) {
+        SquareView square;
+        // Loop through current state (both keys and values)
+        for(Color color : Color.values()) {
+            for(String code : currentState.get(color)) {
+                square = codeToSquare(color, code);
+                square.removePawn();
+            }
+        }
+
+        // Replace current state
+        currentState = newState;
+
+        // Draw new state
+        for(Color color : Color.values()) {
+            for(String code : currentState.get(color)) {
+                square = codeToSquare(color, code);
+                square.addPawn(color);
+            }
+        }
+    }
+
+    public void setGameState(EnumMap<Color, String[]> state) {
+        // Para cada cor, se for diferente, atualiza o HashMap
+        for(Color color : Color.values()) {
+            if(!Arrays.equals(currentState.get(color), state.get(color))) {
+                currentState.put(color, state.get(color));
+                updateBoard(state);
+            }
+        }
     }
 
     @Override

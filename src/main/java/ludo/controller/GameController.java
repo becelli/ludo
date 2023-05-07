@@ -19,6 +19,7 @@ public class GameController {
     public void joinGame(InetAddress address) {
         System.out.println("Joining game...");
         this.amIHost = false;
+        // Isso é bom pois se ele tentar conectar dá porta ocupada
         this.client = new Client(address, 5000);
         System.out.println("Connected to host.");
         this.myColor = this.client.recieveColor();
