@@ -4,8 +4,6 @@
  */
 package ludo.view;
 
-import ludo.model.Square;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -36,42 +34,116 @@ public class MainWindow extends javax.swing.JFrame {
 
         // Carrega imagem
         File img = new File("img/ludo.png");
-        jPanel1 = new BoardView(img);
+        boardPanel = new BoardView(img);
+        diceLabel = new DiceView();
+        rollButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        historicoPane = new javax.swing.JTextPane();
+        jLabel1 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        conexMenu = new javax.swing.JMenu();
+        serHostMenuItem = new javax.swing.JMenuItem();
+        conectarMenuItem = new javax.swing.JMenuItem();
+        ajudaMenu = new javax.swing.JMenu();
+        sobreMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 51, 204));
-        jPanel1.setAlignmentX(0.0F);
-        jPanel1.setAlignmentY(0.0F);
-        jPanel1.setEnabled(false);
-        jPanel1.setMinimumSize(new java.awt.Dimension(705, 705));
-        jPanel1.setPreferredSize(new java.awt.Dimension(705, 705));
-        jPanel1.setRequestFocusEnabled(false);
-        jPanel1.setLayout(new java.awt.GridLayout(15, 15));
+        boardPanel.setBackground(new java.awt.Color(255, 51, 204));
+        boardPanel.setAlignmentX(0.0F);
+        boardPanel.setAlignmentY(0.0F);
+        boardPanel.setEnabled(false);
+        boardPanel.setMinimumSize(new java.awt.Dimension(705, 705));
+        boardPanel.setPreferredSize(new java.awt.Dimension(705, 705));
+        boardPanel.setRequestFocusEnabled(false);
+        boardPanel.setLayout(new java.awt.GridLayout(15, 15));
+
+        rollButton.setText("Rolar dado");
+        rollButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rollButtonActionPerformed(evt);
+            }
+        });
+
+        historicoPane.setEditable(false);
+        historicoPane.setFocusable(false);
+        jScrollPane1.setViewportView(historicoPane);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setLabelFor(historicoPane);
+        jLabel1.setText("Histórico da partida");
+
+        conexMenu.setText("Conexão");
+
+        serHostMenuItem.setText("Ser host");
+        serHostMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                serHostMenuItemActionPerformed(evt);
+            }
+        });
+        conexMenu.add(serHostMenuItem);
+
+        conectarMenuItem.setText("Conectar");
+        conexMenu.add(conectarMenuItem);
+
+        jMenuBar1.add(conexMenu);
+
+        ajudaMenu.setText("Ajuda");
+
+        sobreMenuItem.setText("Sobre");
+        ajudaMenu.add(sobreMenuItem);
+
+        jMenuBar1.add(ajudaMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 963, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(diceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(rollButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1)))))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 835, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(diceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(rollButton)
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rollButtonActionPerformed
+
+    private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serHostMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serHostMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -109,6 +181,17 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenu ajudaMenu;
+    private javax.swing.JPanel boardPanel;
+    private javax.swing.JMenuItem conectarMenuItem;
+    private javax.swing.JMenu conexMenu;
+    private javax.swing.JLabel diceLabel;
+    private javax.swing.JTextPane historicoPane;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton rollButton;
+    private javax.swing.JMenuItem serHostMenuItem;
+    private javax.swing.JMenuItem sobreMenuItem;
     // End of variables declaration//GEN-END:variables
 }

@@ -44,6 +44,7 @@ public class SquareView extends JLabel {
             return;
         }
 
+        // of course a tileset would be better, but I'm not going to learn how to do that in Java Swing
         ImageIcon pawn = new ImageIcon("img/pawns/pawn_" + this.currentColor.toString().toLowerCase() + "_" + this.pawnCount + ".png");
         setIcon(pawn);
     }

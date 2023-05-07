@@ -5,14 +5,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.EnumMap;
 
 import ludo.model.Color;
 
 public class BoardView extends JPanel {
     private BufferedImage backgroundImage;
 
+    private int coordToIndex(int x, int y) {
+        return x * 15 + y;
+    }
+
     private SquareView getSquare(int x, int y) {
-        return (SquareView) this.getComponent(x * 15 + y);
+        return (SquareView) this.getComponent(coordToIndex(x, y));
     }
 
     public BoardView(File imageFile) {
@@ -89,23 +94,54 @@ public class BoardView extends JPanel {
         }
 
         // Teste: adiciona peão vermelho na casa  (é pra zerar e colocar um, e apenas um, novo peão vermelho)
-        /*square = getSquare(2, 2);
-        square.addPawn(Color.RED);*/
+        square = getSquare(2, 2);
+        square.addPawn(Color.RED);
 
         // Teste: adiciona peão vermelho na casa (2, 11) (é pra ficar dois)
-        /*square = getSquare(2, 11);
-        square.addPawn(Color.RED);*/
+        square = getSquare(7, 6);
+        square.addPawn(Color.RED);
+        square.addPawn(Color.RED);
+        square.addPawn(Color.RED);
+        square.addPawn(Color.RED);
 
-        // Casas especiais
-        
+        // Casas especiais (estrelas e casas de segurança)
+        valores = new int[]{8, 2, 6, 12, 6, 13, 1, 8};
+        int[] valores2 = new int[]{2, 6, 12, 8, 1, 6, 8, 13};
+        int index;
+        for(int i = 0; i < valores.length; i++) {
+            // remove o que está lá
+            index = coordToIndex(valores[i], valores2[i]);
+            this.remove(index);
+            // adiciona a casa especial
+            this.add(new SpecialSquareView(), index);
+        }
+
+        SpecialSquareView squareSpecial = (SpecialSquareView) getSquare(8, 2);
+        // enum map
+        EnumMap<Color, Integer> map = new EnumMap<>(Color.class);
+        map.put(Color.RED, 3);
+        map.put(Color.GREEN, 2);
+        map.put(Color.YELLOW, 1);
+        map.put(Color.BLUE, 4);
+        squareSpecial.setPawns(map);
+
+        squareSpecial = (SpecialSquareView) getSquare(8, 13);
+        squareSpecial.setPawns(map);
     }
 
-    // Não dou acesso ao removePawn nem crio um "movePawn" justamente para prevenir cagada.
-    // Quando um peão de cor diferentee for  até uma casa normal, basta adicionar o peão que vai ser removido
-    // na sua casa original, e adicionar o novo peão na casa de destino.
     public void addPawn(int x, int y, Color color) {
         SquareView square = getSquare(x, y);
         square.addPawn(color);
+    }
+
+    // Muito cuidado com o removePawn.
+    // Quando um peão de cor diferentee for  até uma casa normal, basta adicionar o peão que vai ser removido
+    // na sua casa original, e adicionar o novo peão na casa de destino.
+    // removePawn é apenas para tirar um peão, de uma mesma cor, de uma casa e colocar em outra
+    // Ex.: para adicionar um peão vermelho na casa (x, y), onde já há um peão verde, você dá dois addPawns: um do vermelho em (x,y) e um do verde na base
+    public void removePawn(int x, int y) {
+        SquareView square = getSquare(x, y);
+        square.removePawn();
     }
 
     @Override
