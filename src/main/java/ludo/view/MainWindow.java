@@ -2,6 +2,7 @@ package ludo.view;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.EnumMap;
 
 import ludo.controller.GameController;
 import ludo.model.Color;
@@ -149,10 +150,23 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void pawnSelected(Color color, String type, int pos) {
         System.out.println("Pawn selected: " + color.toString() + " " + type + " " + pos);
+        // TODO: ENVIA PRO MODEL
+        // TODO: MODEL ACIONA handlePawnSelectionResponse
+        // TODO REMOVE: TESTE
+        EnumMap<Color, String[]> response = new EnumMap<>(Color.class);
+        response.put(Color.BLUE, new String[]{"B1", "B2", "B3", "B4"});
+        response.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
+        response.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
+        response.put(Color.YELLOW, new String[]{"N8", "B2", "B3", "B4"});
+        handlePawnSelectionResponse(response);
     }
 
     public void pawnSelected(String type, int pos) {
         System.out.println("Pawn selected: " + type + " " + pos);
+    }
+
+    public void handlePawnSelectionResponse(EnumMap<Color, String[]> response) {
+        this.boardPanel.updateBoard(response);
     }
 
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
@@ -253,7 +267,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu ajudaMenu;
-    private javax.swing.JPanel boardPanel;
+    // TODO: mudar isso, o NetBeans quebra
+    private BoardView boardPanel;
     private javax.swing.JMenuItem conectarMenuItem;
     private javax.swing.JMenu conexMenu;
     private javax.swing.JLabel diceLabel;

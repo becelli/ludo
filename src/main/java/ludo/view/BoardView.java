@@ -66,7 +66,6 @@ public class BoardView extends JPanel {
         };
         int j = 0;
         int nextDiagonal = 1;
-        int identifier;
         for(int i = 0; i < 52; i++) {
             normalSquares[i] = getSquare(line, col);
             normalSquares[i].setIdentifiers(null, "N", i);
@@ -247,6 +246,12 @@ public class BoardView extends JPanel {
         createSquares();
         buildLookupTables();
 
+        // Constrói o currentState padrão
+        currentState.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.YELLOW, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.BLUE, new String[]{"B1", "B2", "B3", "B4"});
+
         this.parent = parent;
 
         // Listener to select pawns
@@ -279,39 +284,26 @@ public class BoardView extends JPanel {
         };
     }
 
-    private void updateBoard(EnumMap<Color, String[]> newState) {
+    public void updateBoard(EnumMap<Color, String[]> newState) {
         SquareView square;
-        // Loop through current state (both keys and values)
+        // remove all pawns of current state
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
-                square = codeToSquare(color, code);
-                if(square != null) square.removePawn();
+                codeToSquare(color, code).removePawn();
             }
         }
 
-        // Replace current state
+        // update state
         currentState = newState;
 
-        // Draw new state
+        // add pawns to new state
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
                 square = codeToSquare(color, code);
-                if(square != null) square.addPawn(color);
+                square.addPawn(color);
             }
         }
     }
-
-    public void setGameState(EnumMap<Color, String[]> state) {
-        // Para cada cor, se for diferente, atualiza o HashMap
-        for(Color color : Color.values()) {
-            if(!Arrays.equals(currentState.get(color), state.get(color))) {
-                currentState.put(color, state.get(color));
-                updateBoard(state);
-            }
-        }
-    }
-
-    // action when a square is clicked
 
 
     @Override
