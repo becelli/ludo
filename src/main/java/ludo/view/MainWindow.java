@@ -1,21 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ludo.view;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import ludo.controller.GameController;
 
-/**
- *
- * @author Daniel
- */
+import javax.swing.*;
+
 public class MainWindow extends javax.swing.JFrame {
+    // MainWindow acumula funções, mas ok
+    private GameController gameController = new GameController();
     /**
      * Creates new form MainWindow
      */
@@ -37,9 +28,9 @@ public class MainWindow extends javax.swing.JFrame {
         boardPanel = new BoardView(img);
         diceLabel = new DiceView();
         rollButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        historicoScrollPane = new javax.swing.JScrollPane();
         historicoPane = new javax.swing.JTextPane();
-        jLabel1 = new javax.swing.JLabel();
+        historicoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         conexMenu = new javax.swing.JMenu();
         serHostMenuItem = new javax.swing.JMenuItem();
@@ -67,11 +58,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         historicoPane.setEditable(false);
         historicoPane.setFocusable(false);
-        jScrollPane1.setViewportView(historicoPane);
+        historicoScrollPane.setViewportView(historicoPane);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel1.setLabelFor(historicoPane);
-        jLabel1.setText("Histórico da partida");
+        historicoLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        historicoLabel.setLabelFor(historicoPane);
+        historicoLabel.setText("Histórico da partida");
 
         conexMenu.setText("Conexão");
 
@@ -91,6 +82,11 @@ public class MainWindow extends javax.swing.JFrame {
         ajudaMenu.setText("Ajuda");
 
         sobreMenuItem.setText("Sobre");
+        sobreMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sobreMenuItemActionPerformed(evt);
+            }
+        });
         ajudaMenu.add(sobreMenuItem);
 
         jMenuBar1.add(ajudaMenu);
@@ -111,10 +107,10 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(historicoLabel)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(rollButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1)))))
+                                .addComponent(historicoScrollPane)))))
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
@@ -127,9 +123,9 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addComponent(rollButton)
                         .addGap(20, 20, 20)
-                        .addComponent(jLabel1)
+                        .addComponent(historicoLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
+                        .addComponent(historicoScrollPane))
                     .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
         );
@@ -138,12 +134,28 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
-        // TODO add your handling code here:
+        int result = gameController.rollDice();
+        // call setValue from DiceView
+        DiceView diceView = (DiceView) diceLabel;
+        diceView.setValue(result);
     }//GEN-LAST:event_rollButtonActionPerformed
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serHostMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_serHostMenuItemActionPerformed
+
+    private void sobreMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sobreMenuItemActionPerformed
+        // Criar Dialog de informações
+        // StringBuilder pro HTML não bugar
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><b>LUDO DOS CAMPEÕES</b><br>");
+        sb.append("Idealizado e programado pelos seguintes cornos:<br><ul>");
+        sb.append("<li>Daniel Henrique Serezane Pereira<br>");
+        sb.append("<li>Guilherme Silva Batalhoti<br>");
+        sb.append("<li>Gustavo Becelli do Nacimento<br>");
+        sb.append("</ul>FCT/UNESP - 2023</html>");
+        JOptionPane.showMessageDialog(this, sb.toString(), "Sobre", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_sobreMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,10 +198,10 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem conectarMenuItem;
     private javax.swing.JMenu conexMenu;
     private javax.swing.JLabel diceLabel;
+    private javax.swing.JLabel historicoLabel;
     private javax.swing.JTextPane historicoPane;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane historicoScrollPane;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton rollButton;
     private javax.swing.JMenuItem serHostMenuItem;
     private javax.swing.JMenuItem sobreMenuItem;
