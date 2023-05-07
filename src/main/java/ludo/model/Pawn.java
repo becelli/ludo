@@ -1,6 +1,8 @@
 package ludo.model;
 
-public class Pawn {
+import java.io.Serializable;
+
+public class Pawn implements Serializable {
     private final Color color;
     private int moveCount = 0;
 
@@ -13,9 +15,11 @@ public class Pawn {
     }
 
     public boolean canMove(int steps) {
-        boolean canLeaveBase = this.isAtBase() && steps == 6;
-        boolean isInsideBoard = this.moveCount + steps <= 57;
-        return canLeaveBase || isInsideBoard;
+        if (this.isAtBase() && steps != 6) {
+            return false;
+        }
+
+        return this.moveCount + steps <= 57;
     }
 
     public int getMoveCount() {
