@@ -167,17 +167,6 @@ public class BoardView extends JPanel {
             }
         }
 
-        // Teste: adiciona peão vermelho na casa  (é pra zerar e colocar um, e apenas um, novo peão vermelho)
-        square = getSquare(2, 2);
-        square.addPawn(Color.RED);
-
-        // Teste: adiciona peão vermelho na casa (2, 11) (é pra ficar dois)
-        square = getSquare(7, 6);
-        square.addPawn(Color.RED);
-        square.addPawn(Color.RED);
-        square.addPawn(Color.RED);
-        square.addPawn(Color.RED);
-
         // Casas especiais (estrelas e casas de segurança)
         valores = new int[]{8, 2, 6, 12, 6, 13, 1, 8};
         int[] valores2 = new int[]{2, 6, 12, 8, 1, 6, 8, 13};
@@ -188,24 +177,6 @@ public class BoardView extends JPanel {
             this.remove(index);
             // adiciona a casa especial
             this.add(new SpecialSquareView(), index);
-        }
-
-        SpecialSquareView squareSpecial = (SpecialSquareView) getSquare(8, 2);
-        // enum map
-        EnumMap<Color, Integer> map = new EnumMap<>(Color.class);
-        map.put(Color.RED, 3);
-        map.put(Color.GREEN, 2);
-        map.put(Color.YELLOW, 1);
-        map.put(Color.BLUE, 4);
-        //squareSpecial.setPawns(map);
-
-        squareSpecial = (SpecialSquareView) getSquare(8, 13);
-        squareSpecial.setPawns(map);
-
-        // Number all squares
-        for(int i = 0; i < 225; i++) {
-            square = (SquareView) getComponent(i);
-            square.setText(Integer.toString(i));
         }
 
         buildLookupTables();
