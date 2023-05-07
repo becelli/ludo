@@ -31,7 +31,9 @@ public class Game {
   }
 
   public int rollDice() {
-    return Dice.roll();
+    int rolledValue = Dice.roll();
+    // guardar quanto o cara rolou
+    return rolledValue;
   }
 
   public void nextTurn() {

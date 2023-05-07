@@ -55,4 +55,9 @@ public class GameController {
     public Color getMyColor() {
         return this.myColor;
     }
+
+    public void getMovablePawns(int steps) {
+        // roll dice?
+        System.out.println(this.game.getMovablePawns(this.myColor, steps));
+    }
 }

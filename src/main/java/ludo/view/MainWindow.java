@@ -186,8 +186,9 @@ public class MainWindow extends javax.swing.JFrame {
         sb.append("Seu IP local é: ");
         sb.append(localIP);
         JOptionPane.showMessageDialog(this, sb.toString(), "Seu IP", JOptionPane.INFORMATION_MESSAGE);
-        // Disable the connect option
+        // Disable all options
         this.conectarMenuItem.setEnabled(false);
+        this.serHostMenuItem.setEnabled(false);
     }//GEN-LAST:event_serHostMenuItemActionPerformed
 
     private void sobreMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sobreMenuItemActionPerformed
@@ -228,6 +229,8 @@ public class MainWindow extends javax.swing.JFrame {
             rollButton.setEnabled(true);
             // Disable hosting option
             this.serHostMenuItem.setEnabled(false);
+            // Disable connection option
+            this.conectarMenuItem.setEnabled(false);
         } catch (UnknownHostException ex) {
             JOptionPane.showMessageDialog(this, "Erro na conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
