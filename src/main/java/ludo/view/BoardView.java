@@ -17,6 +17,17 @@ public class BoardView extends JPanel {
         UP, RIGHT, DOWN, LEFT
     }
 
+    private class ColorData {
+        public Direction direction;
+        public int line;
+        public int col;
+        public ColorData(Direction direction, int line, int col) {
+            this.direction = direction;
+            this.line = line;
+            this.col = col;
+        }
+    }
+
     // lookup tables -- programação dinâmica :sunglasses:
     private SquareView[][] baseSquares = new SquareView[4][4];
     private SquareView[] normalSquares = new SquareView[52];
@@ -84,6 +95,40 @@ public class BoardView extends JPanel {
 
             turningCounts[j]--;
             if(turningCounts[j] == 0) j++;
+        }
+
+        // Construindo as casas finais
+        // EnumMap de direções
+        EnumMap<Color, ColorData> finalDirections = new EnumMap<>(Color.class);
+        finalDirections.put(Color.BLUE, new ColorData(Direction.RIGHT, 7, 1));
+        finalDirections.put(Color.RED, new ColorData(Direction.DOWN, 1, 7));
+        finalDirections.put(Color.YELLOW, new ColorData(Direction.UP, 13, 7));
+        finalDirections.put(Color.GREEN, new ColorData(Direction.LEFT, 7, 13));
+
+        int lineModifier = 0, colModifier = 0;
+        SquareView square;
+        for(Color color : Color.values()) {
+            ColorData data = finalDirections.get(color);
+            line = data.line;
+            col = data.col;
+            switch (data.direction) {
+                case DOWN -> lineModifier = 1;
+                case LEFT -> colModifier = -1;
+                case UP -> lineModifier = -1;
+                case RIGHT -> colModifier = 1;
+            }
+            if(data.direction == Direction.DOWN || data.direction == Direction.UP) {
+                colModifier = 0;
+            }
+            else {
+                lineModifier = 0;
+            }
+            for(int i = 0; i < 6; i++) {
+                square = getSquare(line, col);
+                finalSquares[color.ordinal()][i] = square;
+                line += lineModifier;
+                col += colModifier;
+            }
         }
     }
 
