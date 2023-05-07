@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class MainWindow extends javax.swing.JFrame {
     // MainWindow acumula funções, mas ok
-    private GameController gameController = new GameController();
+    private GameController gameController = new GameController(this);
     private Color myColor; // cópia para não precisar ficar pedindo toda hora
     /**
      * Creates new form MainWindow

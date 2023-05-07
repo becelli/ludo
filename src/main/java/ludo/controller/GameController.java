@@ -7,13 +7,19 @@ import ludo.model.Game;
 import ludo.model.GameState;
 import ludo.socket.Client;
 import ludo.socket.Server;
+import ludo.view.MainWindow;
 
 public class GameController {
     private Game game = new Game();
+    private MainWindow UI;
     private boolean amIHost;
     private Server server;
     private Client client;
     private Color myColor;
+
+    public GameController(MainWindow UI) {
+        this.UI = UI;
+    }
 
     public boolean joinGame(InetAddress address) {
         /*System.out.println("Joining game...");
