@@ -3,6 +3,8 @@ package ludo.view;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Arrays;
@@ -36,6 +38,8 @@ public class BoardView extends JPanel {
 
     private EnumMap<Color, String[]> currentState = new EnumMap<>(Color.class);
 
+    private MainWindow parent;
+
     private int coordToIndex(int x, int y) {
         return x * 15 + y;
     }
@@ -64,6 +68,7 @@ public class BoardView extends JPanel {
         int nextDiagonal = 1;
         for(int i = 0; i < 52; i++) {
             normalSquares[i] = getSquare(line, col);
+            normalSquares[i].setClickable();
 
             if(j == nextDiagonal) {
                 // Hora de virar a diagonal! Isso custará 1 movimento.
@@ -129,20 +134,16 @@ public class BoardView extends JPanel {
             for(int i = 0; i < 6; i++) {
                 square = getSquare(line, col);
                 finalSquares[color.ordinal()][i] = square;
+                if(i != 5) square.setClickable();
                 line += lineModifier;
                 col += colModifier;
             }
         }
     }
 
-    public BoardView(File imageFile) {
-        // Setando background
-        try {
-            backgroundImage = ImageIO.read(imageFile);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
+    // função executada apenas uma vez
+    // criada para melhor leitura do construtor
+    private void createSquares() {
         // Criando quadrados
         // Insert the squares into the 15x15 grid
         int top, left, bottom, right;
@@ -194,12 +195,14 @@ public class BoardView extends JPanel {
                 color = Color.values()[c++];
                 square = getSquare(valores[i], valores[j]);
                 baseSquares[color.ordinal()][0] = square;
+                square.setIdentifiers(color, "B", 0);
                 // adiciona peão
                 square.addPawn(color);
 
                 square = getSquare(valores[i] + 1, valores[j]);
                 square.setBorder(0, 1, 0, 0);
                 baseSquares[color.ordinal()][1] = square;
+                square.setIdentifiers(color, "B", 1);
                 // adiciona peão, remove bordas
                 square.addPawn(color);
 
@@ -207,11 +210,13 @@ public class BoardView extends JPanel {
                 square.setBorder(1, 0, 0, 0);
                 square.addPawn(color);
                 baseSquares[color.ordinal()][2] = square;
+                square.setIdentifiers(color, "B", 2);
 
                 square = getSquare(valores[i] + 1, valores[j] + 1);
                 square.setBorder(0, 0, 0, 0);
                 square.addPawn(color);
                 baseSquares[color.ordinal()][3] = square;
+                square.setIdentifiers(color, "B", 3);
             }
         }
 
@@ -224,10 +229,37 @@ public class BoardView extends JPanel {
             index = coordToIndex(valores[i], valores2[i]);
             this.remove(index);
             // adiciona a casa especial
-            this.add(new SpecialSquareView(), index);
+            this.add(new SpecialSquareView(index), index);
+        }
+    }
+
+    public BoardView(File imageFile, MainWindow parent) {
+        // Setando background
+        try {
+            backgroundImage = ImageIO.read(imageFile);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
+        createSquares();
         buildLookupTables();
+
+        this.parent = parent;
+
+        // Listener to select pawns
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Get the square that was clicked
+                SquareView square = (SquareView) getComponentAt(e.getPoint());
+                // If it's a square, select it
+                if(square != null) {
+                    if(square.isClickable()) {
+                        System.out.println("oi");
+                    }
+                }
+            }
+        });
     }
 
     private SquareView codeToSquare(Color color, String code) {
@@ -274,6 +306,9 @@ public class BoardView extends JPanel {
             }
         }
     }
+
+    // action when a square is clicked
+
 
     @Override
     protected void paintComponent(Graphics g) {

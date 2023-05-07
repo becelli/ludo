@@ -7,6 +7,12 @@ import ludo.model.Color;
 public class SquareView extends JLabel {
     private int pawnCount = 0;
     private Color currentColor = null;
+    protected boolean clickable = false;
+    // I KNOW IT'S REDUNDANT
+    // it's just quicker
+    protected String type;
+    protected int pos;
+    protected Color color;
     public SquareView() {
         super("");
         // Seta tamanho do quadrado (45px)
@@ -47,5 +53,15 @@ public class SquareView extends JLabel {
         // of course a tileset would be better, but I'm not going to learn how to do that in Java Swing
         ImageIcon pawn = new ImageIcon("img/pawns/pawn_" + this.currentColor.toString().toLowerCase() + "_" + this.pawnCount + ".png");
         setIcon(pawn);
+    }
+
+    protected boolean isClickable() {
+        return this.clickable;
+    }
+
+    public void setIdentifiers(Color color, String type, int pos) {
+        this.type = type;
+        this.pos = pos;
+        this.clickable = true;
     }
 }

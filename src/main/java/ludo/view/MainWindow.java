@@ -1,6 +1,10 @@
 package ludo.view;
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import ludo.controller.GameController;
+import ludo.model.Color;
 import ludo.socket.*;
 
 import javax.swing.*;
@@ -8,6 +12,7 @@ import javax.swing.*;
 public class MainWindow extends javax.swing.JFrame {
     // MainWindow acumula funções, mas ok
     private GameController gameController = new GameController();
+    private Color myColor; // cópia para não precisar ficar pedindo toda hora
     /**
      * Creates new form MainWindow
      */
@@ -28,13 +33,13 @@ public class MainWindow extends javax.swing.JFrame {
 
         // Carrega imagem
         File img = new File("img/ludo.png");
-        boardPanel = new BoardView(img);
+        boardPanel = new BoardView(img, this);
         diceLabel = new DiceView();
         rollButton = new javax.swing.JButton();
         historicoScrollPane = new javax.swing.JScrollPane();
         historicoPane = new javax.swing.JTextPane();
         historicoLabel = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        menuBar = new javax.swing.JMenuBar();
         conexMenu = new javax.swing.JMenu();
         serHostMenuItem = new javax.swing.JMenuItem();
         conectarMenuItem = new javax.swing.JMenuItem();
@@ -53,6 +58,7 @@ public class MainWindow extends javax.swing.JFrame {
         boardPanel.setLayout(new java.awt.GridLayout(15, 15));
 
         rollButton.setText("Rolar dado");
+        rollButton.setEnabled(false);
         rollButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rollButtonActionPerformed(evt);
@@ -78,9 +84,14 @@ public class MainWindow extends javax.swing.JFrame {
         conexMenu.add(serHostMenuItem);
 
         conectarMenuItem.setText("Conectar");
+        conectarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conectarMenuItemActionPerformed(evt);
+            }
+        });
         conexMenu.add(conectarMenuItem);
 
-        jMenuBar1.add(conexMenu);
+        menuBar.add(conexMenu);
 
         ajudaMenu.setText("Ajuda");
 
@@ -92,9 +103,9 @@ public class MainWindow extends javax.swing.JFrame {
         });
         ajudaMenu.add(sobreMenuItem);
 
-        jMenuBar1.add(ajudaMenu);
+        menuBar.add(ajudaMenu);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,15 +147,19 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void pawnSelected()
+
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
         int result = gameController.rollDice();
         // call setValue from DiceView
         DiceView diceView = (DiceView) diceLabel;
         diceView.setValue(result);
+        // update pane
+        historicoPane.setText(historicoPane.getText() + "\n" + this.myColor.toString().toUpperCase() + " rolou " + result + "\n");
+        // Now that's all done, let the player select the pawn
     }//GEN-LAST:event_rollButtonActionPerformed
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serHostMenuItemActionPerformed
-        // TODO add your handling code here:
         String localIP;
         localIP = Server.getNetworkIP();
         StringBuilder sb = new StringBuilder();
@@ -165,6 +180,35 @@ public class MainWindow extends javax.swing.JFrame {
         sb.append("</ul>FCT/UNESP - 2023</html>");
         JOptionPane.showMessageDialog(this, sb.toString(), "Sobre", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_sobreMenuItemActionPerformed
+
+    private void conectarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conectarMenuItemActionPerformed
+        String ip = JOptionPane.showInputDialog(this, "Digite o IP do host", "Conectar", JOptionPane.QUESTION_MESSAGE);
+        // validate IP address
+        if(ip == null || ip.isEmpty() || ip.isBlank() || !ip.matches("\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}")) {
+            JOptionPane.showMessageDialog(this, "IP inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        InetAddress address = null;
+        try {
+            address = InetAddress.getByName(ip);
+            // try to connect to server
+            boolean res = gameController.joinGame(address);
+            if (!res) {
+                JOptionPane.showMessageDialog(this, "Erro na conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "Conectado com sucesso.", "Conectado", JOptionPane.INFORMATION_MESSAGE);
+            // Get color
+            this.myColor = gameController.getMyColor();
+            // Print connection to pane
+            historicoPane.setText("Conectado ao servidor " + address.getHostAddress() + "\n");
+            // Enable dice rolling
+            rollButton.setEnabled(true);
+        } catch (UnknownHostException ex) {
+            JOptionPane.showMessageDialog(this, "Erro na conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        // connect to server
+    }//GEN-LAST:event_conectarMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,7 +254,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel historicoLabel;
     private javax.swing.JTextPane historicoPane;
     private javax.swing.JScrollPane historicoScrollPane;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton rollButton;
     private javax.swing.JMenuItem serHostMenuItem;
     private javax.swing.JMenuItem sobreMenuItem;
