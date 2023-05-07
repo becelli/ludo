@@ -1,5 +1,8 @@
 package ludo.model;
 
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
 public class Game {
   private GameState gameState;
 
@@ -38,4 +41,11 @@ public class Game {
   public boolean movePawn(Pawn pawn, int steps) {
     return this.gameState.movePawn(pawn, steps);
   }
+
+  public ArrayList<Pawn> getMovablePawns(Color color, int steps) {
+    return Stream.of(this.gameState.getPawns())
+        .filter(pawn -> pawn.getColor().equals(color) && pawn.canMove(steps))
+        .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+  }
+
 }

@@ -1,9 +1,9 @@
 package ludo.socket;
 
+import ludo.model.Color;
 import ludo.model.GameState;
 import java.net.*;
 import java.io.*;
-import java.util.Base64;
 
 public class Client {
 
@@ -11,7 +11,7 @@ public class Client {
     private DataInputStream in;
     private DataOutputStream out;
 
-    public Client(String address, int port) {
+    public Client(InetAddress address, int port) {
         try {
             this.socket = new Socket(address, port);
             this.in = new DataInputStream(socket.getInputStream());
@@ -23,16 +23,16 @@ public class Client {
         }
     }
 
-    private void sendGameState(GameState gameState) {
-        String msg = Encoder.toString(gameState);
+    public void sendGameState(GameState gameState) {
+        String game = Encoder.toString(gameState);
         try {
-            out.writeBytes(msg);
+            out.writeBytes(game);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private GameState receiveGameState() {
+    public GameState recieveGameState() {
         String data = null;
         try {
             data = in.readUTF();
@@ -40,5 +40,15 @@ public class Client {
             e.printStackTrace();
         }
         return Encoder.fromString(data);
+    }
+
+    public Color recieveColor() {
+        String data = null;
+        try {
+            data = in.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Color.valueOf(data);
     }
 }

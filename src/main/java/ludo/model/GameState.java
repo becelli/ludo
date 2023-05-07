@@ -47,4 +47,8 @@ public class GameState implements Serializable {
   public boolean movePawn(Pawn pawn, int steps) {
     return PawnMover.movePawn(this.pawns, pawn, steps);
   }
+
+  public Pawn[] getPawns() {
+    return this.pawns;
+  }
 }

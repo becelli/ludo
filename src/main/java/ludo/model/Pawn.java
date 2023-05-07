@@ -54,4 +54,5 @@ public class Pawn implements Serializable {
         return this.isInAFirstSquare() || this.isOnStar() || this.isInFinalPath() ||
                 this.isAtHome() || this.isAtBase();
     }
+
 }
