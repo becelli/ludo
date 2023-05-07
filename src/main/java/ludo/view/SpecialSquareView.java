@@ -24,7 +24,6 @@ public class SpecialSquareView extends SquareView {
         this.redraw();
     }
 
-    @Override
     public void removePawn(Color color) {
         this.pawnCount.put(color, this.pawnCount.get(color) - 1);
         this.redraw();
