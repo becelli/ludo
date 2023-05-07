@@ -7,6 +7,6 @@ public class GameController {
     public GameController() {}
 
     public int rollDice() {
-        return Game.();
+        return Dice.roll();
     }
 }
