@@ -37,7 +37,8 @@ public class GameController {
     }
 
     public int rollDice() {
-        return Dice.roll();
+        int result = Dice.roll();
+        return result;
     }
 
     public GameState getGameState() {

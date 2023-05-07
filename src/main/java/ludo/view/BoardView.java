@@ -261,7 +261,7 @@ public class BoardView extends JPanel {
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
                 square = codeToSquare(color, code);
-                square.removePawn();
+                if(square != null) square.removePawn();
             }
         }
 
@@ -272,7 +272,7 @@ public class BoardView extends JPanel {
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
                 square = codeToSquare(color, code);
-                square.addPawn(color);
+                if(square != null) square.addPawn(color);
             }
         }
     }

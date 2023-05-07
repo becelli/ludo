@@ -37,6 +37,8 @@ public class SquareView extends JLabel {
         this.redraw();
     }
 
+    protected void removePawn(Color color) {}
+
     protected void redraw() {
         // Se não tem peça, seta imagem vazia
         if(this.pawnCount == 0) {

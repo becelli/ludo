@@ -18,14 +18,15 @@ public class SpecialSquareView extends SquareView {
         this.redraw();
     }
 
-    public void setPawns(EnumMap<Color, Integer> pawns) {
-        this.pawnCount.putAll(pawns);
+    @Override
+    public void addPawn(Color color) {
+        this.pawnCount.put(color, this.pawnCount.get(color) + 1);
         this.redraw();
     }
 
     @Override
-    public void addPawn(Color color) {
-        this.pawnCount.put(color, this.pawnCount.get(color) + 1);
+    public void removePawn(Color color) {
+        this.pawnCount.put(color, this.pawnCount.get(color) - 1);
         this.redraw();
     }
 
