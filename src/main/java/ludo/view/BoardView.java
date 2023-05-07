@@ -228,18 +228,6 @@ public class BoardView extends JPanel {
         }
 
         buildLookupTables();
-        currentState.put(Color.BLUE, new String[]{"B1", "B2", "B3", "B4"});
-        currentState.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
-        currentState.put(Color.YELLOW, new String[]{"B1", "B2", "B3", "B4"});
-        currentState.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
-
-        EnumMap<Color, String[]> teste = new EnumMap<>(Color.class);
-        teste.put(Color.BLUE, new String[]{"N2", "B2", "B3", "B4"});
-        teste.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
-        teste.put(Color.YELLOW, new String[]{"B1", "B2", "B3", "B4"});
-        teste.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
-
-        updateBoard(teste);
     }
 
     private SquareView codeToSquare(Color color, String code) {
