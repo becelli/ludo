@@ -34,48 +34,57 @@ public class BoardView extends JPanel {
         // não precisa constuir os da base
         // passei essa responsabilidade para um for loop no construtor desta
         // classe que já visita as casas da base
-        int startLine = 1, startCol = 8;
-        int[] turningCounts = {4, 5, 2, 5};
-        Direction[] directions = {Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
-        Direction dir;
+        int line = 0, col = 8;
+        int[] turningCounts = {
+                5, 6, 2,
+                5, 6, 2,
+                5, 6, 2,
+                5, 6, 2
+        };
+        Direction[] directions = {
+                Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.DOWN, Direction.LEFT,
+                Direction.UP, Direction.LEFT, Direction.UP, Direction.RIGHT, Direction.UP, Direction.RIGHT,
+                Direction.UP, Direction.RIGHT
+        };
         int j = 0;
         int nextDiagonal = 1;
-        for(int i = 0; i < 16; i++) {
-            dir = directions[j];
-            switch (dir) {
-                case DOWN -> startLine++;
-                case LEFT -> startCol--;
-                case UP -> startLine--;
-                case RIGHT -> startCol++;
-            }
-            turningCounts[j]--;
-            if(turningCounts[j] == 0) {
-                j++;
-            }
+        for(int i = 0; i < 52; i++) {
+            normalSquares[i] = getSquare(line, col);
 
             if(j == nextDiagonal) {
-                switch (dir) {
-                    case DOWN -> {
-                        startLine++;
-                        startCol++;
-                    }
-                    case LEFT -> {
-                        startLine++;
-                        startCol--;
-                    }
-                    case UP -> {
-                        startLine--;
-                        startCol--;
-                    }
-                    case RIGHT -> {
-                        startLine--;
-                        startCol++;
-                    }
+                // Hora de virar a diagonal! Isso custará 1 movimento.
+                turningCounts[j]--;
+                // Incrementar e/ou decrementar de acordo com a combinação [direção atual, direção anterior]
+                if (directions[j] == Direction.RIGHT && directions[j - 1] == Direction.DOWN) {
+                    line++;
+                    col++;
+                }
+                else if (directions[j] == Direction.DOWN && directions[j - 1] == Direction.LEFT) {
+                    line++;
+                    col--;
+                }
+                else if (directions[j] == Direction.LEFT && directions[j - 1] == Direction.UP) {
+                    line--;
+                    col--;
+                }
+                else if (directions[j] == Direction.UP && directions[j - 1] == Direction.RIGHT) {
+                    line--;
+                    col++;
                 }
                 nextDiagonal += 3;
+                continue;
             }
+
+            switch (directions[j]) {
+                case DOWN -> line++;
+                case LEFT -> col--;
+                case UP -> line--;
+                case RIGHT -> col++;
+            }
+
+            turningCounts[j]--;
+            if(turningCounts[j] == 0) j++;
         }
-        System.out.println(startLine + " " + startCol);
     }
 
     public BoardView(File imageFile) {
@@ -178,9 +187,6 @@ public class BoardView extends JPanel {
             index = coordToIndex(valores[i], valores2[i]);
             this.remove(index);
             // adiciona a casa especial
-            if(i > 3) {
-                System.out.println(index);
-            }
             this.add(new SpecialSquareView(), index);
         }
 
