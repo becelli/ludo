@@ -66,9 +66,10 @@ public class BoardView extends JPanel {
         };
         int j = 0;
         int nextDiagonal = 1;
+        int identifier;
         for(int i = 0; i < 52; i++) {
             normalSquares[i] = getSquare(line, col);
-            normalSquares[i].setClickable();
+            normalSquares[i].setIdentifiers(null, "N", i);
 
             if(j == nextDiagonal) {
                 // Hora de virar a diagonal! Isso custará 1 movimento.
@@ -104,6 +105,7 @@ public class BoardView extends JPanel {
             turningCounts[j]--;
             if(turningCounts[j] == 0) j++;
         }
+        normalSquares[0].setIdentifiers(null, "N", 52);
 
         // Construindo as casas finais
         // EnumMap de direções
@@ -134,7 +136,8 @@ public class BoardView extends JPanel {
             for(int i = 0; i < 6; i++) {
                 square = getSquare(line, col);
                 finalSquares[color.ordinal()][i] = square;
-                if(i != 5) square.setClickable();
+                square.setIdentifiers(color, "F", i);
+                if(i == 5) square.unsetClickable();
                 line += lineModifier;
                 col += colModifier;
             }
@@ -253,10 +256,12 @@ public class BoardView extends JPanel {
                 // Get the square that was clicked
                 SquareView square = (SquareView) getComponentAt(e.getPoint());
                 // If it's a square, select it
-                if(square != null) {
-                    if(square.isClickable()) {
-                        System.out.println("oi");
-                    }
+                if(square != null && square.isClickable()) {
+                        if(square.getColor() == null) {
+                            parent.pawnSelected(square.getType(), square.getPos());
+                            return;
+                        }
+                        parent.pawnSelected(square.getColor(), square.getType(), square.getPos());
                 }
             }
         });
@@ -266,7 +271,6 @@ public class BoardView extends JPanel {
         String tipo = code.substring(0, 1);
         // Resto da string é um índice
         int index = Integer.parseInt(code.substring(1)) - 1;
-        if(tipo.equals("N")) System.out.println(index);
         return switch (tipo) {
             case "B" -> baseSquares[color.ordinal()][index];
             case "N" -> normalSquares[index + 1];

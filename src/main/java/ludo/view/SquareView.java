@@ -12,6 +12,7 @@ public class SquareView extends JLabel {
     // it's just quicker
     protected String type;
     protected int pos;
+    // Fuck inheritance
     protected Color color;
     public SquareView() {
         super("");
@@ -60,8 +61,26 @@ public class SquareView extends JLabel {
     }
 
     public void setIdentifiers(Color color, String type, int pos) {
+        this.color = color;
         this.type = type;
         this.pos = pos;
         this.clickable = true;
+    }
+
+    public void unsetClickable() {
+        this.clickable = false;
+    }
+
+    // getters
+    public Color getColor() {
+        return this.color;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public int getPos() {
+        return this.pos;
     }
 }

@@ -147,7 +147,13 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void pawnSelected()
+    public void pawnSelected(Color color, String type, int pos) {
+        System.out.println("Pawn selected: " + color.toString() + " " + type + " " + pos);
+    }
+
+    public void pawnSelected(String type, int pos) {
+        System.out.println("Pawn selected: " + type + " " + pos);
+    }
 
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
         int result = gameController.rollDice();

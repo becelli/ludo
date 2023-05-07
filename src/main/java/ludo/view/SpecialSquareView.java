@@ -9,7 +9,7 @@ public class SpecialSquareView extends SquareView {
     private final EnumMap<Color, Integer> pawnCount = new EnumMap<>(Color.class);
     public SpecialSquareView(int pos) {
         super();
-        this.setIdentifiers(Color.BLUE, "N", pos);
+        this.setIdentifiers(null, "N", pos);
         // Esses são sempre quadrados "normais", então dá pra definir as bordas aqui
         this.setBorder(1, 1, 0, 0);
         // Seta tudo para 0
