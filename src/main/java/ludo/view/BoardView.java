@@ -6,11 +6,21 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import ludo.model.Color;
 
 public class BoardView extends JPanel {
     private BufferedImage backgroundImage;
+
+    private enum Direction {
+        UP, RIGHT, DOWN, LEFT
+    }
+
+    // lookup tables -- programação dinâmica :sunglasses:
+    private SquareView[][] baseSquares = new SquareView[4][4];
+    private SquareView[] normalSquares = new SquareView[52];
+    private SquareView[][] finalSquares = new SquareView[4][6];
 
     private int coordToIndex(int x, int y) {
         return x * 15 + y;
@@ -18,6 +28,54 @@ public class BoardView extends JPanel {
 
     private SquareView getSquare(int x, int y) {
         return (SquareView) this.getComponent(coordToIndex(x, y));
+    }
+
+    private void buildLookupTables() {
+        // não precisa constuir os da base
+        // passei essa responsabilidade para um for loop no construtor desta
+        // classe que já visita as casas da base
+        int startLine = 1, startCol = 8;
+        int[] turningCounts = {4, 5, 2, 5};
+        Direction[] directions = {Direction.DOWN, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
+        Direction dir;
+        int j = 0;
+        int nextDiagonal = 1;
+        for(int i = 0; i < 16; i++) {
+            dir = directions[j];
+            switch (dir) {
+                case DOWN -> startLine++;
+                case LEFT -> startCol--;
+                case UP -> startLine--;
+                case RIGHT -> startCol++;
+            }
+            turningCounts[j]--;
+            if(turningCounts[j] == 0) {
+                j++;
+            }
+
+            if(j == nextDiagonal) {
+                switch (dir) {
+                    case DOWN -> {
+                        startLine++;
+                        startCol++;
+                    }
+                    case LEFT -> {
+                        startLine++;
+                        startCol--;
+                    }
+                    case UP -> {
+                        startLine--;
+                        startCol--;
+                    }
+                    case RIGHT -> {
+                        startLine--;
+                        startCol++;
+                    }
+                }
+                nextDiagonal += 3;
+            }
+        }
+        System.out.println(startLine + " " + startCol);
     }
 
     public BoardView(File imageFile) {
@@ -78,18 +136,25 @@ public class BoardView extends JPanel {
                 // Cor para colocar os peões
                 color = Color.values()[c++];
                 square = getSquare(valores[i], valores[j]);
+                baseSquares[color.ordinal()][0] = square;
                 // adiciona peão
                 square.addPawn(color);
+
                 square = getSquare(valores[i] + 1, valores[j]);
                 square.setBorder(0, 1, 0, 0);
+                baseSquares[color.ordinal()][1] = square;
                 // adiciona peão, remove bordas
                 square.addPawn(color);
+
                 square = getSquare(valores[i], valores[j] + 1);
                 square.setBorder(1, 0, 0, 0);
                 square.addPawn(color);
+                baseSquares[color.ordinal()][2] = square;
+
                 square = getSquare(valores[i] + 1, valores[j] + 1);
                 square.setBorder(0, 0, 0, 0);
                 square.addPawn(color);
+                baseSquares[color.ordinal()][3] = square;
             }
         }
 
@@ -113,6 +178,9 @@ public class BoardView extends JPanel {
             index = coordToIndex(valores[i], valores2[i]);
             this.remove(index);
             // adiciona a casa especial
+            if(i > 3) {
+                System.out.println(index);
+            }
             this.add(new SpecialSquareView(), index);
         }
 
@@ -123,10 +191,18 @@ public class BoardView extends JPanel {
         map.put(Color.GREEN, 2);
         map.put(Color.YELLOW, 1);
         map.put(Color.BLUE, 4);
-        squareSpecial.setPawns(map);
+        //squareSpecial.setPawns(map);
 
         squareSpecial = (SpecialSquareView) getSquare(8, 13);
         squareSpecial.setPawns(map);
+
+        // Number all squares
+        for(int i = 0; i < 225; i++) {
+            square = (SquareView) getComponent(i);
+            square.setText(Integer.toString(i));
+        }
+
+        buildLookupTables();
     }
 
     public void addPawn(int x, int y, Color color) {
