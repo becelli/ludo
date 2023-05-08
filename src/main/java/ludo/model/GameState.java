@@ -54,7 +54,19 @@ public class GameState implements Serializable {
   // Object to EnumMap
   public EnumMap<Color, String[]> toMap() {
     EnumMap<Color, String[]> map = new EnumMap<>(Color.class);
-    
+    for (Color color : Color.values()) {
+      String[] codes = new String[4];
+      int baseCount = 4;
+      for (int i = 0; i < 4; i++) {
+        // if its B
+        if (this.pawns[color.ordinal() * 4 + i].isAtBase()) {
+          codes[i] = "B" + (baseCount--);
+          continue;
+        }
+        codes[i] = this.pawns[color.ordinal() * 4 + i].getCode();
+      }
+      map.put(color, codes);
+    }
     return map;
   }
 }

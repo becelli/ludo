@@ -289,11 +289,20 @@ public class BoardView extends JPanel {
     }
 
     public void updateBoard(EnumMap<Color, String[]> newState) {
+        System.out.println("Updating board");
         SquareView square;
+        SpecialSquareView specialSquare;
         // remove all pawns of current state
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
-                codeToSquare(color, code).removePawn();
+                // if its a special square (get class type)
+                square = codeToSquare(color, code);
+                if(square instanceof SpecialSquareView) {
+                    specialSquare = (SpecialSquareView) square;
+                    specialSquare.removePawn(color);
+                    continue;
+                }
+                square.removePawn();
             }
         }
 
@@ -304,6 +313,7 @@ public class BoardView extends JPanel {
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
                 square = codeToSquare(color, code);
+                System.out.print(square.getType() + square.getPos() + " ");
                 square.addPawn(color);
             }
         }

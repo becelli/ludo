@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 
 import ludo.controller.GameController;
@@ -167,29 +168,47 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void invalidPawnWarning() {
+        JOptionPane.showMessageDialog(this, "Selecione uma peça válida!", "Peça inválida", JOptionPane.ERROR_MESSAGE);
+    }
+
     public void pawnSelected(Color squareColor, String type, int pos) {
         if(!this.timeToMove) return;
         // Check if the color of the square is the same as the player
-        if(!Objects.equals(squareColor.toString(), this.myColor)) return;
+        if(!Objects.equals(squareColor.toString(), this.myColor)) {
+            this.invalidPawnWarning();
+            return;
+        };
         System.out.println(squareColor.toString() + type.toString() + pos);
         // Compare the square code with the movable pawns locations
         String code = type + pos;
         if(type.equals("B")) code = type;
         // Check if pawn exists in movable pawns
-        if(!this.movablePawns.contains(code)) return;
+        if(!this.movablePawns.contains(code)) {
+            this.invalidPawnWarning();
+            return;
+        }
         // get pawn code index of
         int index = this.movablePawns.indexOf(code);
         System.out.println(index + " " + this.steps);
         this.gameController.movePawn(index, this.steps);
+        // TODO: time to move false
     }
 
     public void pawnSelected(String type, int pos) {
         if(!this.timeToMove) return;
-        System.out.println("oi");
+        String code = type + pos;
+        if(!this.movablePawns.contains(code)) {
+            this.invalidPawnWarning();
+            return;
+        }
+        int index = this.movablePawns.indexOf(code);
+        this.gameController.movePawn(index, this.steps);
     }
 
-    public void handlePawnSelectionResponse(EnumMap<Color, String[]> response) {
-        this.boardPanel.updateBoard(response);
+    public void handlePawnSelectionResponse() {
+        EnumMap<Color, String[]> newState = this.gameController.getGameState().toMap();
+        this.boardPanel.updateBoard(newState);
     }
 
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed

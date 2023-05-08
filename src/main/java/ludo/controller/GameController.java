@@ -66,6 +66,7 @@ public class GameController {
         ArrayList<Pawn> pawns = this.game.getMovablePawns(this.myColor, steps);
         Pawn pawn = pawns.get(index);
         this.game.movePawn(pawn, steps);
+        this.UI.handlePawnSelectionResponse();
     }
 
     public void setGameState(GameState gameState) throws Exception {
