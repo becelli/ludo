@@ -224,9 +224,10 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void pawnSelected(String type, int pos) {
-        //System.out.println(type + pos);
+        System.out.println(type + pos);
         if(!this.timeToMove) return;
         String code = type + pos;
+        if (code.equals("N52")) code = "N0";
         if(!this.movablePawns.contains(code)) {
             this.invalidPawnWarning();
             return;
@@ -276,7 +277,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         try {//GEN-FIRST:event_serHostMenuItemActionPerformed
-            String localIP = String.valueOf(InetAddress.getLocalHost().getHostAddress());
+            String localIP = InetAddress.getLocalHost().getHostAddress();
             String message = String.format("Seu IP é: %s", localIP);
             JOptionPane.showMessageDialog(this, message, "Seu IP", JOptionPane.INFORMATION_MESSAGE);
             // Disable all options

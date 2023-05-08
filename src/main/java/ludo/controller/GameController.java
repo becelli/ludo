@@ -60,6 +60,7 @@ public class GameController {
         for (Pawn p : pawns) {
             pawnsCode.add(p.getCode());
         }
+        System.out.println("Movable pawns: " + pawnsCode);
         return pawnsCode;
     }
 

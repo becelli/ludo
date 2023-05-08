@@ -18,15 +18,18 @@ public class GameState implements Serializable {
       for (int i = 0; i < 4; i++) {
 
         // TODO: Revert this
-//        if (color.equals(Color.RED)) {
-//          this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
-//          if (i == 0) {
-//            this.pawns[color.ordinal() * 4 + i].setMoveCount(56);
-//            continue;
-//          }
-//          this.pawns[color.ordinal() * 4 + i].setMoveCount(57);
-//          continue;
-//        }
+        if (i == 0) {
+        if (color.equals(Color.YELLOW)) {
+          this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
+            this.pawns[color.ordinal() * 4 + i].setMoveCount(26);
+            continue;
+          }
+        if (color.equals(Color.RED)) {
+          this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
+            this.pawns[color.ordinal() * 4 + i].setMoveCount(1);
+            continue;
+          }
+        }
           this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
       }
     });
