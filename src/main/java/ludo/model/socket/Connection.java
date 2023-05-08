@@ -1,6 +1,5 @@
 package ludo.model.socket;
 
-
 import ludo.controller.GameController;
 import ludo.model.GameState;
 
@@ -21,9 +20,9 @@ public class Connection implements Runnable {
     private boolean isMyTurn = false;
 
     public Connection(GameController controller) {
-      this.controller = controller;
+        this.controller = controller;
     }
-    
+
     public InetAddress getAddress() {
         return address;
     }
@@ -43,13 +42,9 @@ public class Connection implements Runnable {
     public void run() {
         while (true) {
             try {
-                System.out.println("Waiting to receive game state...");
                 this.receiveGameState();
-                System.out.println("Game state received.");
                 this.setIsMyTurn(true);
-                System.out.println("My turn.");
             } catch (Exception e) {
-                System.out.println("A conexão foi interrompida.");
                 this.disconnect();
                 break;
             }
@@ -57,16 +52,13 @@ public class Connection implements Runnable {
     }
 
     public void startConnection() {
-            System.out.println("Starting connection...");
-            try {
+        try {
             this.setIsMyTurn(true);
             this.address = InetAddress.getLocalHost();
             ServerSocket tcpSocket = new ServerSocket(5000);
             this.port = tcpSocket.getLocalPort();
             this.socket = tcpSocket.accept();
-            System.out.println("Connection established.");
             tcpSocket.close();
-            System.out.println("Freeing dice...");
             this.controller.freeDice();
             this.controller.startGame();
         } catch (Exception e) {
@@ -76,12 +68,10 @@ public class Connection implements Runnable {
 
     public void sendGameState(GameState gameState) {
         try {
-        System.out.println("Sending game state...");
-        this.setIsMyTurn(false);
-        OutputStream outputStream = this.socket.getOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(outputStream);
-        out.writeObject(gameState);
-        System.out.println("Game state sent.");
+            this.setIsMyTurn(false);
+            OutputStream outputStream = this.socket.getOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(outputStream);
+            out.writeObject(gameState);
         } catch (Exception e) {
             System.out.println("Error while sending game state.");
         }
@@ -89,9 +79,9 @@ public class Connection implements Runnable {
 
     private void receiveGameState() throws IOException {
         try {
-        ObjectInputStream in = new ObjectInputStream(this.socket.getInputStream());
-        GameState gameState = (GameState) in.readObject();
-        this.controller.setGameState(gameState);
+            ObjectInputStream in = new ObjectInputStream(this.socket.getInputStream());
+            GameState gameState = (GameState) in.readObject();
+            this.controller.setGameState(gameState);
         } catch (ClassNotFoundException e) {
             System.out.println("Error while receiving game state.");
         }
@@ -102,7 +92,6 @@ public class Connection implements Runnable {
         this.socket = new Socket(address, port);
         this.controller.startGame();
     }
-
 
     public void disconnect() {
         try {
