@@ -4,7 +4,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 
 import ludo.controller.GameController;
@@ -31,7 +30,7 @@ public class MainWindow extends javax.swing.JFrame {
         setTitle("Ludo dos campeões");
 
         // TODO: REMOVE THIS
-        this.freeDice();
+//        this.freeDice();
     }
 
     /**
@@ -60,7 +59,7 @@ public class MainWindow extends javax.swing.JFrame {
         sobreMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+//        setResizable(true);
 
         boardPanel.setBackground(new java.awt.Color(255, 51, 204));
         boardPanel.setAlignmentX(0.0F);
@@ -195,10 +194,11 @@ public class MainWindow extends javax.swing.JFrame {
         int index = this.movablePawns.indexOf(code);
         this.gameController.movePawn(index, this.steps);
         // TODO: time to move false
+        this.timeToMove = false;
     }
 
     public void pawnSelected(String type, int pos) {
-        System.out.println(type.toString() + pos);
+        System.out.println(type + pos);
         if(!this.timeToMove) return;
         String code = type + pos;
         if(!this.movablePawns.contains(code)) {
@@ -211,16 +211,21 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void handlePawnSelectionResponse() {
         // TODO: uncomment
-        //this.timeToMove = false;
+        this.timeToMove = false;
         this.movablePawns = null;
         this.steps = 0;
         EnumMap<Color, String[]> newState = this.gameController.getGameState().toMap();
         this.boardPanel.updateBoard(newState);
     }
 
+    public void updateBoard() {
+        EnumMap<Color, String[]> newState = this.gameController.getGameState().toMap();
+        this.boardPanel.updateBoard(newState);
+    }
+
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
         this.steps = this.gameController.rollDice();
-        //this.lockDice();
+        this.lockDice();
         // call setValue from DiceView
         DiceView diceView = (DiceView) diceLabel;
         diceView.setValue(this.steps);
@@ -235,11 +240,17 @@ public class MainWindow extends javax.swing.JFrame {
         this.timeToMove = true;
         ArrayList<String> movablePawns = this.gameController.getMovablePawns(this.steps);
         this.movablePawns = movablePawns;
+
         System.out.println("Movable pawns: " + this.movablePawns.toString());
         this.myColor = this.gameController.getMyColor().toString();
         System.out.println("My color: " + this.myColor.toString());
         // TODO: if array length == 0, passa a vez
         // passa a vez = manda game state igual
+        if (movablePawns.size() == 0) {
+            this.timeToMove = false;
+            this.gameController.sendGameState();
+            return;
+        }
     }//GEN-LAST:event_rollButtonActionPerformed
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -251,6 +262,7 @@ public class MainWindow extends javax.swing.JFrame {
             this.conectarMenuItem.setEnabled(false);
             this.serHostMenuItem.setEnabled(false);
             this.gameController.createGame();
+            this.boardPanel.updateBoard(this.gameController.getGameState().toMap());
         }  catch (Exception ex) {
             System.out.println("Erro ao obter IP local");
         }

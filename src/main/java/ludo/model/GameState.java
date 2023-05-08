@@ -16,7 +16,18 @@ public class GameState implements Serializable {
     this.currentTurnColor = Color.RED;
     Stream.of(Color.values()).forEach(color -> {
       for (int i = 0; i < 4; i++) {
-        this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
+
+        // TODO: Revert this
+//        if (color.equals(Color.RED)) {
+//          this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
+//          if (i == 0) {
+//            this.pawns[color.ordinal() * 4 + i].setMoveCount(56);
+//            continue;
+//          }
+//          this.pawns[color.ordinal() * 4 + i].setMoveCount(57);
+//          continue;
+//        }
+          this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
       }
     });
   }

@@ -83,6 +83,7 @@ public class Connection implements Runnable {
         ObjectInputStream in = new ObjectInputStream(this.socket.getInputStream());
         GameState gameState = (GameState) in.readObject();
         this.controller.setGameState(gameState);
+
         // Recebi o tabuleiro - é a minha vez - libera o dado
         this.controller.freeDice();
     }
@@ -94,8 +95,12 @@ public class Connection implements Runnable {
     }
 
 
-    public void disconnect() throws Exception {
-        this.socket.close();
+    public void disconnect() {
+        try {
+            this.socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void beAHost() {

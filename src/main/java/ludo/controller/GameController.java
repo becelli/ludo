@@ -54,6 +54,7 @@ public class GameController {
 
     public ArrayList<String> getMovablePawns(int steps) {
         // Convert from pawns to code
+        System.out.println("Getting movable pawns... for " + this.myColor);
         ArrayList<Pawn> pawns = this.game.getMovablePawns(this.myColor, steps);
         ArrayList<String> pawnsCode = new ArrayList<>();
         for (Pawn p : pawns) {
@@ -62,17 +63,32 @@ public class GameController {
         return pawnsCode;
     }
 
+    public void verifyIsThereAWinner() {
+        if (this.game.isThereAWinner()) {
+            Color winner = this.game.getWinner();
+            if (winner.equals(this.myColor)) {
+                JOptionPane.showMessageDialog(this.UI, "Você venceu!");
+            } else {
+                JOptionPane.showMessageDialog(this.UI, "Você perdeu!");
+            }
+            this.connection.disconnect();
+            this.connection.setIsMyTurn(false);
+        }
+    }
+
     public void movePawn(int index, int steps) {
         ArrayList<Pawn> pawns = this.game.getMovablePawns(this.myColor, steps);
         Pawn pawn = pawns.get(index);
         this.game.movePawn(pawn, steps);
         this.UI.handlePawnSelectionResponse();
+        this.verifyIsThereAWinner();
+        this.sendGameState();
     }
 
-    public void setGameState(GameState gameState) throws Exception {
+    public void setGameState(GameState gameState) {
         // TODO: remove comments
         if (gameState == null) {
-            JOptionPane.showMessageDialog(null, "O oponente desistiu! Você venceu!");
+            JOptionPane.showMessageDialog(this.UI, "O oponente desistiu!");
 //            this.UI.getConcede().setEnabled(false);
 //            this.UI.getMenu().setEnabled(true);
 //            this.UI.clearLog();
@@ -82,13 +98,14 @@ public class GameController {
         }
 
         this.game.setGameState(gameState);
+        this.UI.updateBoard();
 
         Color winner = this.game.getWinner();
         if (winner != null) {
             if (winner.equals(this.myColor)) {
-                JOptionPane.showMessageDialog(null, "Você venceu!");
+                JOptionPane.showMessageDialog(this.UI, "Você venceu!");
             } else {
-                JOptionPane.showMessageDialog(null, "Você perdeu!");
+                JOptionPane.showMessageDialog(this.UI, "Você perdeu!");
             }
             this.connection.disconnect();
             this.connection.setIsMyTurn(false);
@@ -101,7 +118,7 @@ public class GameController {
         Thread gameThread = new Thread(this.connection);
         gameThread.start();
 
-        JOptionPane.showMessageDialog(null, "O jogo começou!");
+        JOptionPane.showMessageDialog(this.UI, "O jogo começou!");
         /* this.mf.setTitle("Damas - Em jogo");
         this.mf.getConcede().setEnabled(true);
         this.mf.getMenu().setEnabled(false);
@@ -129,6 +146,13 @@ public class GameController {
 
     public void connectToHost(InetAddress address, int port) throws Exception {
         this.connection.connectToHost(address, port);
+    }
+
+    public void forfeit() {
+        this.setGameState(null);
+        this.sendGameState();
+        this.connection.disconnect();
+        this.connection.setIsMyTurn(false);
     }
 
 

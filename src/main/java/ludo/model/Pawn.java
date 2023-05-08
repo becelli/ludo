@@ -15,6 +15,7 @@ public class Pawn implements Serializable {
     }
 
     public boolean canMove(int steps) {
+        System.out.printf("I'm pawn %s, am I at base? %s, steps: %d%n", this.color, this.isAtBase(), steps);
         if (this.isAtBase() && steps != 6) {
             return false;
         }
@@ -60,6 +61,23 @@ public class Pawn implements Serializable {
     public String getCode() {
         if(this.isAtBase()) return "B";
         if(this.isInFinalPath()) return "F" + (this.moveCount - 51);
-        return "N" + this.moveCount;
+        int relativePosition;
+        switch (this.color) {
+            case GREEN -> {
+                relativePosition = (this.moveCount + 13) % 52;
+                return "N" + relativePosition;
+            }
+            case YELLOW -> {
+                relativePosition = (this.moveCount + 26) % 52;
+                return "N" + relativePosition;
+            }
+            case BLUE -> {
+                relativePosition = (this.moveCount + 39) % 52;
+                return "N" + relativePosition;
+            }
+            default -> {
+                return "N" + this.moveCount;
+            }
+        }
     }
 }
