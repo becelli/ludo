@@ -305,8 +305,8 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             address = InetAddress.getByName(ip);
             // try to connect to server
-            boolean res = this.gameController.joinGame(address);
-            if (!res) {
+            boolean success = this.gameController.joinGame(address);
+            if (!success) {
                 JOptionPane.showMessageDialog(this, "Erro na conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -344,8 +344,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void disableForfeit() {
         forfeitMenuItem.setEnabled(false);
-        // Lock dice
         this.lockDice();
+    }
+
+     public void enableConnectAgain() {
+        this.conectarMenuItem.setEnabled(true);
+        this.serHostMenuItem.setEnabled(true);
     }
 
     /**
@@ -382,6 +386,8 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu ajudaMenu;

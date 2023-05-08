@@ -11,8 +11,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Connection implements Runnable {
     public GameController controller;
@@ -46,18 +44,21 @@ public class Connection implements Runnable {
         while (true) {
             try {
                 System.out.println("Waiting to receive game state...");
-                this.recieveGameState();
+                this.receiveGameState();
                 System.out.println("Game state received.");
                 this.setIsMyTurn(true);
                 System.out.println("My turn.");
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                System.out.println("A conexão foi interrompida.");
+                this.disconnect();
+                break;
             }
         }
     }
 
-    public void startConnection() throws Exception {
+    public void startConnection() {
             System.out.println("Starting connection...");
+            try {
             this.setIsMyTurn(true);
             this.address = InetAddress.getLocalHost();
             ServerSocket tcpSocket = new ServerSocket(5000);
@@ -68,27 +69,35 @@ public class Connection implements Runnable {
             System.out.println("Freeing dice...");
             this.controller.freeDice();
             this.controller.startGame();
+        } catch (Exception e) {
+            System.out.println("Error while starting connection.");
+        }
     }
 
-    public void sendGameState(GameState gameState) throws Exception {
+    public void sendGameState(GameState gameState) {
+        try {
         System.out.println("Sending game state...");
         this.setIsMyTurn(false);
         OutputStream outputStream = this.socket.getOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(outputStream);
         out.writeObject(gameState);
         System.out.println("Game state sent.");
+        } catch (Exception e) {
+            System.out.println("Error while sending game state.");
+        }
     }
 
-    private void recieveGameState() throws Exception {
+    private void receiveGameState() throws IOException {
+        try {
         ObjectInputStream in = new ObjectInputStream(this.socket.getInputStream());
         GameState gameState = (GameState) in.readObject();
         this.controller.setGameState(gameState);
-
-        // Recebi o tabuleiro - é a minha vez - libera o dado
-        this.controller.freeDice();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error while receiving game state.");
+        }
     }
 
-    public void connectToHost(InetAddress address, int port) throws Exception {
+    public void connectToHost(InetAddress address, int port) throws IOException {
         this.setIsMyTurn(false);
         this.socket = new Socket(address, port);
         this.controller.startGame();
@@ -99,7 +108,7 @@ public class Connection implements Runnable {
         try {
             this.socket.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error while closing socket.");
         }
     }
 

@@ -27,10 +27,10 @@ public class GameController {
         this.myColor = Color.YELLOW;
         try {
             this.connection.connectToHost(address, 5000);
+            return true; // conncted successfully
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return false;
         }
-        return true; // conncted successfully
     }
 
     // TODO: chamar da UI (para ser host)
@@ -88,9 +88,10 @@ public class GameController {
     public void setGameState(GameState gameState) {
         if (gameState == null) {
             JOptionPane.showMessageDialog(this.UI, "O oponente desistiu!");
-            this.UI.disableForfeit();
-            this.connection.disconnect();
             this.connection.setIsMyTurn(false);
+            this.UI.disableForfeit();
+            this.UI.enableConnectAgain();
+            this.UI.lockDice();
             return;
         }
 
@@ -98,7 +99,10 @@ public class GameController {
         this.UI.updateBoard();
 
         Color winner = this.game.getWinner();
-        if (winner != null) {
+        if (winner == null) {
+            this.connection.setIsMyTurn(true);
+            this.UI.freeDice();
+        } else {
             if (winner.equals(this.myColor)) {
                 JOptionPane.showMessageDialog(this.UI, "Você venceu!");
             } else {
@@ -145,10 +149,13 @@ public class GameController {
     }
 
     public void forfeit() {
-        this.setGameState(null);
+        this.game.setGameState(null);
         this.sendGameState();
-        this.connection.disconnect();
         this.connection.setIsMyTurn(false);
+        this.connection.disconnect();
+        this.UI.lockDice();
+        this.UI.disableForfeit();
+        this.UI.enableConnectAgain();
     }
 
 
