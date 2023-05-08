@@ -169,12 +169,16 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
-        int result = gameController.rollDice();
+        int result = this.gameController.rollDice();
+        this.lockDice();
         // call setValue from DiceView
         DiceView diceView = (DiceView) diceLabel;
         diceView.setValue(result);
         // update pane
-        historicoPane.setText(historicoPane.getText() + "\n" + this.myColor.toString().toUpperCase() + " rolou " + result + "\n");
+        historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + result + "\n");
+
+        // TODO: Remnove this
+        this.gameController.sendGameState();
         // Now that's all done, let the player select the pawn
     }//GEN-LAST:event_rollButtonActionPerformed
 
@@ -186,6 +190,7 @@ public class MainWindow extends javax.swing.JFrame {
             // Disable all options
             this.conectarMenuItem.setEnabled(false);
             this.serHostMenuItem.setEnabled(false);
+            this.gameController.createGame();
         }  catch (Exception ex) {
             System.out.println("Erro ao obter IP local");
         }
@@ -215,7 +220,7 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             address = InetAddress.getByName(ip);
             // try to connect to server
-            boolean res = gameController.joinGame(address);
+            boolean res = this.gameController.joinGame(address);
             if (!res) {
                 JOptionPane.showMessageDialog(this, "Erro na conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;

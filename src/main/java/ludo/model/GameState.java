@@ -25,11 +25,9 @@ public class GameState implements Serializable {
         .filter(color -> {
           return Stream.of(this.pawns)
               .filter(pawn -> {
-                return pawn.getColor() == color;
+                return pawn.getColor().equals(color);
               })
-              .allMatch(pawn -> {
-                return pawn.isAtHome();
-              });
+              .allMatch(Pawn::isAtHome);
         })
         .findFirst()
         .orElse(null);

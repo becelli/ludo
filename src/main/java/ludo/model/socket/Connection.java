@@ -45,8 +45,11 @@ public class Connection implements Runnable {
     public void run() {
         while (true) {
             try {
+                System.out.println("Waiting to receive game state...");
                 this.recieveGameState();
+                System.out.println("Game state received.");
                 this.setIsMyTurn(true);
+                System.out.println("My turn.");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -54,22 +57,26 @@ public class Connection implements Runnable {
     }
 
     public void startConnection() throws Exception {
+            System.out.println("Starting connection...");
             this.setIsMyTurn(true);
             this.address = InetAddress.getLocalHost();
             ServerSocket tcpSocket = new ServerSocket(5000);
             this.port = tcpSocket.getLocalPort();
             this.socket = tcpSocket.accept();
+            System.out.println("Connection established.");
             tcpSocket.close();
-            this.controller.startGame();
-            // É o host, começa jogando
+            System.out.println("Freeing dice...");
             this.controller.freeDice();
+            this.controller.startGame();
     }
 
     public void sendGameState(GameState gameState) throws Exception {
+        System.out.println("Sending game state...");
         this.setIsMyTurn(false);
         OutputStream outputStream = this.socket.getOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(outputStream);
         out.writeObject(gameState);
+        System.out.println("Game state sent.");
     }
 
     private void recieveGameState() throws Exception {

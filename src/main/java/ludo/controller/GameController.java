@@ -22,22 +22,19 @@ public class GameController {
     }
 
     public boolean joinGame(InetAddress address) {
-        /*System.out.println("Joining game...");
-        this.amIHost = false;
-        // Isso é bom pois se ele tentar conectar dá porta ocupada
-        this.client = new Client(address, 5000);
-        System.out.println("Connected to host.");
-        this.myColor = this.client.recieveColor();
-        this.game.setGameState(this.client.recieveGameState());
-        System.out.println("Game joined.");*/
-        // TESTE
-        this.myColor = Color.GREEN;
+        this.myColor = Color.YELLOW;
+        try {
+            this.connection.connectToHost(address, 5000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return true; // conncted successfully
     }
 
     // TODO: chamar da UI (para ser host)
     public void createGame() {
         game.createGame();
+        this.myColor = Color.RED;
         this.connection.beAHost();
     }
 
@@ -70,22 +67,21 @@ public class GameController {
 
         this.game.setGameState(gameState);
 
-        if (this.game.getWinner().equals(this.myColor)) {
-            JOptionPane.showMessageDialog(null, "Você venceu!");
-            this.lockDice();
-        } else if (this.game.getWinner() != null) {
-            JOptionPane.showMessageDialog(null, "Você perdeu!");
-            this.lockDice();
-        } else {
-            if (this.connection.getIsMyTurn()) {
-//                this.UI.set
+        Color winner = this.game.getWinner();
+        if (winner != null) {
+            if (winner.equals(this.myColor)) {
+                JOptionPane.showMessageDialog(null, "Você venceu!");
             } else {
-//                this.UI.setTurn("Vez do oponente");
+                JOptionPane.showMessageDialog(null, "Você perdeu!");
             }
+            this.connection.disconnect();
+            this.connection.setIsMyTurn(false);
+            return;
         }
     }
 
     public void startGame() {
+        System.out.println("Starting game...");
         Thread gameThread = new Thread(this.connection);
         gameThread.start();
 
@@ -118,11 +114,15 @@ public class GameController {
     public void connectToHost(InetAddress address, int port) throws Exception {
         this.connection.connectToHost(address, port);
     }
-    
-    public boolean isMyTurn() {
-        return this.game.isMyTurn(this.myColor);
-    }
 
+
+    public void sendGameState() {
+        try {
+            this.connection.sendGameState(this.getGameState());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 
