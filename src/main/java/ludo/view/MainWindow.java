@@ -21,7 +21,6 @@ public class MainWindow extends javax.swing.JFrame {
     private boolean timeToMove = false;
     private ArrayList<String> movablePawns;
     private String myColor;
-    private boolean BATATA = false;
 
     /**
      * Creates new form MainWindow
@@ -33,7 +32,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         // TODO: REMOVE THIS
         this.freeDice();
-        this.BATATA = true;
     }
 
     /**
@@ -195,8 +193,6 @@ public class MainWindow extends javax.swing.JFrame {
         }
         // get pawn code index of
         int index = this.movablePawns.indexOf(code);
-        System.out.println(index + " " + this.steps);
-        if(this.BATATA) this.steps = 50;
         this.gameController.movePawn(index, this.steps);
         // TODO: time to move false
     }
@@ -214,6 +210,10 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void handlePawnSelectionResponse() {
+        // TODO: uncomment
+        //this.timeToMove = false;
+        this.movablePawns = null;
+        this.steps = 0;
         EnumMap<Color, String[]> newState = this.gameController.getGameState().toMap();
         this.boardPanel.updateBoard(newState);
     }

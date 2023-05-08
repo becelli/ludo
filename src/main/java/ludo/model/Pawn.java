@@ -59,7 +59,7 @@ public class Pawn implements Serializable {
 
     public String getCode() {
         if(this.isAtBase()) return "B";
-        if(this.isInFinalPath()) return "F" + (this.moveCount - 52);
+        if(this.isInFinalPath()) return "F" + (this.moveCount - 51);
         return "N" + this.moveCount;
     }
 }
