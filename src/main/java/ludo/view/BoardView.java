@@ -279,9 +279,6 @@ public class BoardView extends JPanel {
     private SquareView codeToSquare(Color color, String code) {
         String tipo = code.substring(0, 1);
         // Resto da string é um índice
-        if(tipo == "F"){
-            System.out.println("CASA FINAL:" + tipo + " " + code.substring(1));
-        }
         int index = Integer.parseInt(code.substring(1)) - 1;
         return switch (tipo) {
             case "B" -> baseSquares[color.ordinal()][index];

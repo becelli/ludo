@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Objects;
 
 import ludo.controller.GameController;
@@ -20,6 +21,8 @@ public class MainWindow extends javax.swing.JFrame {
     private boolean timeToMove = false;
     private ArrayList<String> movablePawns;
     private String myColor;
+    private HashMap<String, String> translate = new HashMap<>();
+    private HashMap<String, String> colorMap = new HashMap<>();
 
     /**
      * Creates new form MainWindow
@@ -28,9 +31,16 @@ public class MainWindow extends javax.swing.JFrame {
         initComponents();
         // Set title
         setTitle("Ludo dos campeões");
-
-        // TODO: REMOVE THIS
-//        this.freeDice();
+        // Tradução
+        translate.put("RED", "Vermelho");
+        translate.put("BLUE", "Azul");
+        translate.put("GREEN", "Verde");
+        translate.put("YELLOW", "Amarelo");
+        // Hex codes
+        colorMap.put("BLUE", "82bbec");
+        colorMap.put("RED", "ec3535");
+        colorMap.put("YELLOW", "ffdd36");
+        colorMap.put("GREEN", "06c258");
     }
 
     /**
@@ -47,19 +57,20 @@ public class MainWindow extends javax.swing.JFrame {
         boardPanel = new BoardView(img, this);
         diceLabel = new DiceView();
         rollButton = new javax.swing.JButton();
-        historicoScrollPane = new javax.swing.JScrollPane();
-        historicoPane = new javax.swing.JTextPane();
-        historicoLabel = new javax.swing.JLabel();
         statusLabel = new javax.swing.JLabel();
+        suaCorLabel = new javax.swing.JLabel();
+        suaCorInfoLabel = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         conexMenu = new javax.swing.JMenu();
         serHostMenuItem = new javax.swing.JMenuItem();
         conectarMenuItem = new javax.swing.JMenuItem();
+        jogoMenu = new javax.swing.JMenu();
+        forfeitMenuItem = new javax.swing.JMenuItem();
         ajudaMenu = new javax.swing.JMenu();
         sobreMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-//        setResizable(true);
+        setResizable(false);
 
         boardPanel.setBackground(new java.awt.Color(255, 51, 204));
         boardPanel.setAlignmentX(0.0F);
@@ -78,17 +89,13 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        historicoScrollPane.setAutoscrolls(true);
-
-        historicoPane.setEditable(false);
-        historicoPane.setFocusable(false);
-        historicoScrollPane.setViewportView(historicoPane);
-
-        historicoLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        historicoLabel.setLabelFor(historicoPane);
-        historicoLabel.setText("Histórico da partida");
-
         statusLabel.setText("-");
+
+        suaCorLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        suaCorLabel.setText("Sua cor");
+
+        suaCorInfoLabel.setBackground(new java.awt.Color(153, 153, 153));
+        suaCorInfoLabel.setText("-");
 
         conexMenu.setText("Conexão");
 
@@ -109,6 +116,19 @@ public class MainWindow extends javax.swing.JFrame {
         conexMenu.add(conectarMenuItem);
 
         menuBar.add(conexMenu);
+
+        jogoMenu.setText("Jogo");
+
+        forfeitMenuItem.setText("Desistir");
+        forfeitMenuItem.setEnabled(false);
+        forfeitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forfeitMenuItemActionPerformed(evt);
+            }
+        });
+        jogoMenu.add(forfeitMenuItem);
+
+        menuBar.add(jogoMenu);
 
         ajudaMenu.setText("Ajuda");
 
@@ -141,25 +161,24 @@ public class MainWindow extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(historicoLabel)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(rollButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                                        .addComponent(historicoScrollPane)))))))
+                                    .addComponent(suaCorLabel)
+                                    .addComponent(rollButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(suaCorInfoLabel))))))
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(diceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
                         .addComponent(rollButton)
-                        .addGap(20, 20, 20)
-                        .addComponent(historicoLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(suaCorLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(historicoScrollPane))
+                        .addComponent(suaCorInfoLabel))
                     .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addComponent(statusLabel)
@@ -193,7 +212,6 @@ public class MainWindow extends javax.swing.JFrame {
         // get pawn code index of
         int index = this.movablePawns.indexOf(code);
         this.gameController.movePawn(index, this.steps);
-        // TODO: time to move false
         this.timeToMove = false;
     }
 
@@ -210,7 +228,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void handlePawnSelectionResponse() {
-        // TODO: uncomment
         this.timeToMove = false;
         this.movablePawns = null;
         this.steps = 0;
@@ -231,25 +248,21 @@ public class MainWindow extends javax.swing.JFrame {
         diceView.setValue(this.steps);
         // update pane
         statusLabel.setText("Você rolou " + this.steps + "!");
-        //historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + this.steps + "\n");
 
-        // TODO: Remnove this
-        //this.gameController.sendGameState();
-        // Dice is rolled and updated. Get valid moves for the player.
-        // TODO: cuidado com isso
         this.timeToMove = true;
         ArrayList<String> movablePawns = this.gameController.getMovablePawns(this.steps);
         this.movablePawns = movablePawns;
 
-        System.out.println("Movable pawns: " + this.movablePawns.toString());
+        //System.out.println("Movable pawns: " + this.movablePawns.toString());
         this.myColor = this.gameController.getMyColor().toString();
-        System.out.println("My color: " + this.myColor.toString());
-        // TODO: if array length == 0, passa a vez
+        this.suaCorInfoLabel.setText("<html><font color='#" + this.colorMap.get(this.myColor) + "'>" + this.translate.get(this.myColor) + "</font></html>");
+        
+        //System.out.println("My color: " + this.myColor.toString());
+        // if array length == 0, passa a vez
         // passa a vez = manda game state igual
-        if (movablePawns.size() == 0) {
+        if (movablePawns.isEmpty()) {
             this.timeToMove = false;
             this.gameController.sendGameState();
-            return;
         }
     }//GEN-LAST:event_rollButtonActionPerformed
 
@@ -304,12 +317,19 @@ public class MainWindow extends javax.swing.JFrame {
         // connect to server
     }//GEN-LAST:event_conectarMenuItemActionPerformed
 
+    private void forfeitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forfeitMenuItemActionPerformed
+        // Abrir dialog de confirmação
+        boolean res = JOptionPane.showConfirmDialog(this, "Quer mesmo desistir?", "Desistência", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        if (!res) return;
+        this.gameController.forfeit();
+    }//GEN-LAST:event_forfeitMenuItemActionPerformed
+
     public void startGame() {
         // Block host
         serHostMenuItem.setEnabled(false);
         conectarMenuItem.setEnabled(false);
-        // Clear historicoPane
-        historicoPane.setText("");
+        // Enable forfeit
+        forfeitMenuItem.setEnabled(true);
         // Seta o tabuleiro para as posições iniciais
         boardPanel.clearBoard();
     }
@@ -320,6 +340,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void lockDice() {
         rollButton.setEnabled(false);
+    }
+
+    public void disableForfeit() {
+        forfeitMenuItem.setEnabled(false);
+        // Lock dice
+        this.lockDice();
     }
 
     /**
@@ -363,13 +389,14 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem conectarMenuItem;
     private javax.swing.JMenu conexMenu;
     private javax.swing.JLabel diceLabel;
-    private javax.swing.JLabel historicoLabel;
-    private javax.swing.JTextPane historicoPane;
-    private javax.swing.JScrollPane historicoScrollPane;
+    private javax.swing.JMenuItem forfeitMenuItem;
+    private javax.swing.JMenu jogoMenu;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton rollButton;
     private javax.swing.JMenuItem serHostMenuItem;
     private javax.swing.JMenuItem sobreMenuItem;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel suaCorInfoLabel;
+    private javax.swing.JLabel suaCorLabel;
     // End of variables declaration//GEN-END:variables
 }

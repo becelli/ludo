@@ -86,12 +86,9 @@ public class GameController {
     }
 
     public void setGameState(GameState gameState) {
-        // TODO: remove comments
         if (gameState == null) {
             JOptionPane.showMessageDialog(this.UI, "O oponente desistiu!");
-//            this.UI.getConcede().setEnabled(false);
-//            this.UI.getMenu().setEnabled(true);
-//            this.UI.clearLog();
+            this.UI.disableForfeit();
             this.connection.disconnect();
             this.connection.setIsMyTurn(false);
             return;
@@ -109,7 +106,6 @@ public class GameController {
             }
             this.connection.disconnect();
             this.connection.setIsMyTurn(false);
-            return;
         }
     }
 

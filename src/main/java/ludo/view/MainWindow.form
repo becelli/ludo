@@ -27,6 +27,22 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="jogoMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Jogo"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="forfeitMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Desistir"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="forfeitMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="ajudaMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ajuda"/>
@@ -83,11 +99,9 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="historicoLabel" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="rollButton" pref="180" max="32767" attributes="0"/>
-                                      <Component id="historicoScrollPane" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="suaCorLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="rollButton" min="-2" pref="180" max="-2" attributes="0"/>
+                                  <Component id="suaCorInfoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -101,15 +115,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="diceLabel" min="-2" pref="112" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Component id="rollButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="historicoLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="suaCorLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="historicoScrollPane" max="32767" attributes="0"/>
+                      <Component id="suaCorInfoLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="boardPanel" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -161,37 +175,24 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rollButtonActionPerformed"/>
       </Events>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="historicoScrollPane">
+    <Component class="javax.swing.JLabel" name="statusLabel">
       <Properties>
-        <Property name="autoscrolls" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="-"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JTextPane" name="historicoPane">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Component class="javax.swing.JLabel" name="historicoLabel">
+    </Component>
+    <Component class="javax.swing.JLabel" name="suaCorLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="12" style="1"/>
         </Property>
-        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="historicoPane"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Hist&#xf3;rico da partida"/>
+        <Property name="text" type="java.lang.String" value="Sua cor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="statusLabel">
+    <Component class="javax.swing.JLabel" name="suaCorInfoLabel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="99" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="-"/>
       </Properties>
     </Component>
