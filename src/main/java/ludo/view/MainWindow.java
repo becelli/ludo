@@ -67,10 +67,10 @@ public class MainWindow extends javax.swing.JFrame {
         jogoMenu = new javax.swing.JMenu();
         forfeitMenuItem = new javax.swing.JMenuItem();
         ajudaMenu = new javax.swing.JMenu();
+        regrasMenuItem = new javax.swing.JMenuItem();
         sobreMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
         boardPanel.setBackground(new java.awt.Color(255, 51, 204));
         boardPanel.setAlignmentX(0.0F);
@@ -131,6 +131,14 @@ public class MainWindow extends javax.swing.JFrame {
         menuBar.add(jogoMenu);
 
         ajudaMenu.setText("Ajuda");
+
+        regrasMenuItem.setText("Regras");
+        regrasMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regrasMenuItemActionPerformed(evt);
+            }
+        });
+        ajudaMenu.add(regrasMenuItem);
 
         sobreMenuItem.setText("Sobre");
         sobreMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -216,7 +224,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void pawnSelected(String type, int pos) {
-        System.out.println(type + pos);
+        //System.out.println(type + pos);
         if(!this.timeToMove) return;
         String code = type + pos;
         if(!this.movablePawns.contains(code)) {
@@ -324,6 +332,21 @@ public class MainWindow extends javax.swing.JFrame {
         this.gameController.forfeit();
     }//GEN-LAST:event_forfeitMenuItemActionPerformed
 
+    private void regrasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regrasMenuItemActionPerformed
+        // Abre um texto com as regras
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><b>REGRAS</b><ul>");
+        sb.append("<li> Para que o jogo comece, deve haver um host e um cliente. A conexão deve ser feita no menu superior Conexão.");
+        sb.append("<li> O jogo permite apenas dois jogadores: vermelho (host) e amarelo (cliente).");
+        sb.append("<li> O jogador só pode tirar um peão da base caso tire 6 no dado.");
+        sb.append("<li> Caso um peão, ao mover-se, encontre um ou mais peões adversários, os adversários voltarão a sua base.<br>Isto não acontece em casas especiais.");
+        sb.append("<li> Após jogar o dado, o jogador deve clicar no peão para movê-lo. O peão só se move caso já esteja fora da base.");
+        sb.append("<li> Vence quem colocar seus quatro peões na última casa primeiro.");
+        sb.append("<li> Um jogador pode desistir, a qualquer momento, em Jogo -> Desistir.");
+        sb.append("</ul>Bom jogo!</html>");
+        JOptionPane.showMessageDialog(this, sb.toString(), "Regras", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_regrasMenuItemActionPerformed
+
     public void startGame() {
         // Block host
         serHostMenuItem.setEnabled(false);
@@ -398,6 +421,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem forfeitMenuItem;
     private javax.swing.JMenu jogoMenu;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem regrasMenuItem;
     private javax.swing.JButton rollButton;
     private javax.swing.JMenuItem serHostMenuItem;
     private javax.swing.JMenuItem sobreMenuItem;
