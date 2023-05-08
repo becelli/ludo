@@ -3,6 +3,7 @@ package ludo.model;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.EnumMap;
 import java.util.stream.Stream;
 
 public class GameState implements Serializable {
@@ -48,5 +49,12 @@ public class GameState implements Serializable {
 
   public Pawn[] getPawns() {
     return this.pawns;
+  }
+
+  // Object to EnumMap
+  public EnumMap<Color, String[]> toMap() {
+    EnumMap<Color, String[]> map = new EnumMap<>(Color.class);
+    
+    return map;
   }
 }

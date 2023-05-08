@@ -2,7 +2,9 @@ package ludo.view;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.Objects;
 
 import ludo.controller.GameController;
 import ludo.model.Color;
@@ -12,7 +14,13 @@ import javax.swing.*;
 public class MainWindow extends javax.swing.JFrame {
     // MainWindow acumula funções, mas ok
     private GameController gameController = new GameController(this);
-    private Color myColor; // cópia para não precisar ficar pedindo toda hora
+
+    // Pawn moving game attributes
+    private int steps;
+    private boolean timeToMove = false;
+    private ArrayList<String> movablePawns;
+    private String myColor;
+
     /**
      * Creates new form MainWindow
      */
@@ -159,21 +167,25 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void pawnSelected(Color color, String type, int pos) {
-        System.out.println("Pawn selected: " + color.toString() + " " + type + " " + pos);
-        // TODO: ENVIA PRO MODEL
-        // TODO: MODEL ACIONA handlePawnSelectionResponse
-        // TODO REMOVE: TESTE
-        EnumMap<Color, String[]> response = new EnumMap<>(Color.class);
-        response.put(Color.BLUE, new String[]{"B1", "B2", "B3", "B4"});
-        response.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
-        response.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
-        response.put(Color.YELLOW, new String[]{"N8", "B2", "B3", "B4"});
-        handlePawnSelectionResponse(response);
+    public void pawnSelected(Color squareColor, String type, int pos) {
+        if(!this.timeToMove) return;
+        // Check if the color of the square is the same as the player
+        if(!Objects.equals(squareColor.toString(), this.myColor)) return;
+        System.out.println(squareColor.toString() + type.toString() + pos);
+        // Compare the square code with the movable pawns locations
+        String code = type + pos;
+        if(type.equals("B")) code = type;
+        // Check if pawn exists in movable pawns
+        if(!this.movablePawns.contains(code)) return;
+        // get pawn code index of
+        int index = this.movablePawns.indexOf(code);
+        System.out.println(index + " " + this.steps);
+        this.gameController.movePawn(index, this.steps);
     }
 
     public void pawnSelected(String type, int pos) {
-        System.out.println("Pawn selected: " + type + " " + pos);
+        if(!this.timeToMove) return;
+        System.out.println("oi");
     }
 
     public void handlePawnSelectionResponse(EnumMap<Color, String[]> response) {
@@ -181,18 +193,26 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
-        int result = this.gameController.rollDice();
+        this.steps = this.gameController.rollDice();
         //this.lockDice();
         // call setValue from DiceView
         DiceView diceView = (DiceView) diceLabel;
-        diceView.setValue(result);
+        diceView.setValue(this.steps);
         // update pane
-        //historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + result + "\n");
+        historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + this.steps + "\n");
 
         // TODO: Remnove this
         //this.gameController.sendGameState();
         // Dice is rolled and updated. Get valid moves for the player.
-        this.gameController.getMovablePawns(result);
+        // TODO: cuidado com isso
+        this.timeToMove = true;
+        ArrayList<String> movablePawns = this.gameController.getMovablePawns(this.steps);
+        this.movablePawns = movablePawns;
+        System.out.println("Movable pawns: " + this.movablePawns.toString());
+        this.myColor = this.gameController.getMyColor().toString();
+        System.out.println("My color: " + this.myColor.toString());
+        // TODO: if array length == 0, passa a vez
+        // passa a vez = manda game state igual
     }//GEN-LAST:event_rollButtonActionPerformed
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

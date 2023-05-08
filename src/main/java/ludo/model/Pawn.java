@@ -55,4 +55,9 @@ public class Pawn implements Serializable {
                 this.isAtHome() || this.isAtBase();
     }
 
+    public String getCode() {
+        if(this.isAtBase()) return "B";
+        if(this.isInFinalPath()) return "F" + (this.moveCount - 52);
+        return "N" + this.moveCount;
+    }
 }

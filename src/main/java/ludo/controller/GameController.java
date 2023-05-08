@@ -1,10 +1,12 @@
 package ludo.controller;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 import ludo.model.Color;
 import ludo.model.Game;
 import ludo.model.GameState;
+import ludo.model.Pawn;
 import ludo.model.socket.Connection;
 import ludo.view.MainWindow;
 
@@ -50,10 +52,22 @@ public class GameController {
         return this.myColor;
     }
 
-    public void getMovablePawns(int steps) {
-        // roll dice?
-        System.out.println(this.game.getMovablePawns(this.myColor, steps));
+    public ArrayList<String> getMovablePawns(int steps) {
+        // Convert from pawns to code
+        ArrayList<Pawn> pawns = this.game.getMovablePawns(this.myColor, steps);
+        ArrayList<String> pawnsCode = new ArrayList<>();
+        for (Pawn p : pawns) {
+            pawnsCode.add(p.getCode());
+        }
+        return pawnsCode;
     }
+
+    public void movePawn(int index, int steps) {
+        ArrayList<Pawn> pawns = this.game.getMovablePawns(this.myColor, steps);
+        Pawn pawn = pawns.get(index);
+        this.game.movePawn(pawn, steps);
+    }
+
     public void setGameState(GameState gameState) throws Exception {
         if (gameState == null) {
             JOptionPane.showMessageDialog(null, "O oponente desistiu! Você venceu!");

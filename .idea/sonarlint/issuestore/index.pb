@@ -12,10 +12,4 @@ S
 ^
 .src/main/java/ludo/view/SpecialSquareView.java,9\5\952fcc8ec4ae245407322b399a1f8dd5fae351ce
 W
-'src/main/java/ludo/model/PawnMover.java,b\7\b7d7d7e6ffc1eceeeb00ba2a9cdba09141231cb7
-W
 'src/main/java/ludo/view/SquareView.java,c\c\cc30aab003ca36942cd8651a63071aba7dfe1299
-V
-&src/main/java/ludo/view/BoardView.java,9\3\9340d2fa10e349002e4e3c4b1d57b4c2925793ad
-W
-'src/main/java/ludo/model/GameState.java,7\9\79bad20a8496918e3c98403a8cd5b5832c7a1185

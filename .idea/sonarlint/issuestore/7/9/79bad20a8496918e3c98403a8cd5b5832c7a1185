@@ -1,14 +1,0 @@
-
-r
-java:S1104
-"\Make currentTurnColor a static final constant or non-public and provide accessors if needed.(àÎÞì
-l
-java:S1104"QMake pawns a static final constant or non-public and provide accessors if needed.(µÕÂÿýÿÿÿÿ
-n
-java:S1602"SRemove useless curly braces around statement and then remove useless return keyword(Öªñ–ÿÿÿÿÿ
-n
-java:S1602"SRemove useless curly braces around statement and then remove useless return keyword(ÝŠ”¾ùÿÿÿÿ
-n
-java:S1602"SRemove useless curly braces around statement and then remove useless return keyword(Ù×¬¾úÿÿÿÿ
-V
-java:S1612";Replace this lambda with method reference 'Pawn::isAtHome'.(Ù×¬¾úÿÿÿÿ
