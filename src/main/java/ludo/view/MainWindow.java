@@ -323,7 +323,6 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (UnknownHostException ex) {
             JOptionPane.showMessageDialog(this, "Erro na conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        // connect to server
     }//GEN-LAST:event_conectarMenuItemActionPerformed
 
     private void forfeitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forfeitMenuItemActionPerformed
