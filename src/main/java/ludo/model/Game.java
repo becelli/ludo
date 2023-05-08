@@ -52,7 +52,4 @@ public class Game {
         .filter(pawn -> pawn.getColor().equals(color) && pawn.canMove(steps))
         .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
   }
-
-
-
 }

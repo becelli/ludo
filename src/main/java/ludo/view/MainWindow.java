@@ -20,6 +20,9 @@ public class MainWindow extends javax.swing.JFrame {
         initComponents();
         // Set title
         setTitle("Ludo dos campeões");
+
+        // TODO: REMOVE THIS
+        this.freeDice();
     }
 
     /**
@@ -39,6 +42,7 @@ public class MainWindow extends javax.swing.JFrame {
         historicoScrollPane = new javax.swing.JScrollPane();
         historicoPane = new javax.swing.JTextPane();
         historicoLabel = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         conexMenu = new javax.swing.JMenu();
         serHostMenuItem = new javax.swing.JMenuItem();
@@ -47,6 +51,7 @@ public class MainWindow extends javax.swing.JFrame {
         sobreMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         boardPanel.setBackground(new java.awt.Color(255, 51, 204));
         boardPanel.setAlignmentX(0.0F);
@@ -72,6 +77,8 @@ public class MainWindow extends javax.swing.JFrame {
         historicoLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         historicoLabel.setLabelFor(historicoPane);
         historicoLabel.setText("Histórico da partida");
+
+        statusLabel.setText("-");
 
         conexMenu.setText("Conexão");
 
@@ -113,18 +120,21 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(statusLabel)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(diceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(historicoLabel)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(rollButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                                .addComponent(historicoScrollPane)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addComponent(diceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(historicoLabel)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(rollButton, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                        .addComponent(historicoScrollPane)))))))
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
@@ -141,7 +151,9 @@ public class MainWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(historicoScrollPane))
                     .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                .addGap(10, 10, 10)
+                .addComponent(statusLabel)
+                .addGap(10, 10, 10))
         );
 
         pack();
@@ -170,16 +182,17 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void rollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollButtonActionPerformed
         int result = this.gameController.rollDice();
-        this.lockDice();
+        //this.lockDice();
         // call setValue from DiceView
         DiceView diceView = (DiceView) diceLabel;
         diceView.setValue(result);
         // update pane
-        historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + result + "\n");
+        //historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + result + "\n");
 
         // TODO: Remnove this
-        this.gameController.sendGameState();
-        // Now that's all done, let the player select the pawn
+        //this.gameController.sendGameState();
+        // Dice is rolled and updated. Get valid moves for the player.
+        this.gameController.getMovablePawns(result);
     }//GEN-LAST:event_rollButtonActionPerformed
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -287,7 +300,6 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu ajudaMenu;
-    // TODO: mudar isso, o NetBeans quebra
     private BoardView boardPanel;
     private javax.swing.JMenuItem conectarMenuItem;
     private javax.swing.JMenu conexMenu;
@@ -299,5 +311,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton rollButton;
     private javax.swing.JMenuItem serHostMenuItem;
     private javax.swing.JMenuItem sobreMenuItem;
+    private javax.swing.JLabel statusLabel;
     // End of variables declaration//GEN-END:variables
 }
