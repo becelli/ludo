@@ -235,6 +235,13 @@ public class BoardView extends JPanel {
         }
     }
 
+    private void setDefaultState() {
+        currentState.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.YELLOW, new String[]{"B1", "B2", "B3", "B4"});
+        currentState.put(Color.BLUE, new String[]{"B1", "B2", "B3", "B4"});
+    }
+
     public BoardView(File imageFile, MainWindow parent) {
         // Setando background
         try {
@@ -247,10 +254,7 @@ public class BoardView extends JPanel {
         buildLookupTables();
 
         // Constrói o currentState padrão
-        currentState.put(Color.RED, new String[]{"B1", "B2", "B3", "B4"});
-        currentState.put(Color.GREEN, new String[]{"B1", "B2", "B3", "B4"});
-        currentState.put(Color.YELLOW, new String[]{"B1", "B2", "B3", "B4"});
-        currentState.put(Color.BLUE, new String[]{"B1", "B2", "B3", "B4"});
+        setDefaultState();
 
         this.parent = parent;
 
@@ -297,6 +301,24 @@ public class BoardView extends JPanel {
         currentState = newState;
 
         // add pawns to new state
+        for(Color color : Color.values()) {
+            for(String code : currentState.get(color)) {
+                square = codeToSquare(color, code);
+                square.addPawn(color);
+            }
+        }
+    }
+
+    public void clearBoard( ){
+        SquareView square;
+        for(Color color : Color.values()) {
+            for(String code : currentState.get(color)) {
+                codeToSquare(color, code).removePawn();
+            }
+        }
+
+        setDefaultState();
+
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
                 square = codeToSquare(color, code);

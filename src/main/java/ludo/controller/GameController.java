@@ -5,16 +5,16 @@ import java.net.InetAddress;
 import ludo.model.Color;
 import ludo.model.Game;
 import ludo.model.GameState;
-import ludo.socket.Client;
-import ludo.socket.Server;
+import ludo.model.socket.Connection;
 import ludo.view.MainWindow;
 
+import javax.swing.*;
+
 public class GameController {
-    private Game game = new Game();
+    private final Game game = new Game();
+    private final Connection connection = new Connection(this);
     private MainWindow UI;
     private boolean amIHost;
-    private Server server;
-    private Client client;
     private Color myColor;
 
     public GameController(MainWindow UI) {
@@ -35,13 +35,10 @@ public class GameController {
         return true; // conncted successfully
     }
 
+    // TODO: chamar da UI (para ser host)
     public void createGame() {
         game.createGame();
-        this.amIHost = true;
-        this.server = new Server(5000);
-        this.myColor = Color.RED;
-        this.server.sendColor(Color.YELLOW);
-        this.server.sendGameState(this.game.getGameState());
+        this.connection.beAHost();
     }
 
     public int rollDice() {
@@ -60,4 +57,73 @@ public class GameController {
         // roll dice?
         System.out.println(this.game.getMovablePawns(this.myColor, steps));
     }
+    public void setGameState(GameState gameState) throws Exception {
+        if (gameState == null) {
+            JOptionPane.showMessageDialog(null, "O oponente desistiu! Você venceu!");
+//            this.UI.getConcede().setEnabled(false);
+//            this.UI.getMenu().setEnabled(true);
+//            this.UI.clearLog();
+            this.connection.disconnect();
+            this.connection.setIsMyTurn(false);
+            return;
+        }
+
+        this.game.setGameState(gameState);
+
+        if (this.game.getWinner().equals(this.myColor)) {
+            JOptionPane.showMessageDialog(null, "Você venceu!");
+            this.lockDice();
+        } else if (this.game.getWinner() != null) {
+            JOptionPane.showMessageDialog(null, "Você perdeu!");
+            this.lockDice();
+        } else {
+            if (this.connection.getIsMyTurn()) {
+//                this.UI.set
+            } else {
+//                this.UI.setTurn("Vez do oponente");
+            }
+        }
+    }
+
+    public void startGame() {
+        Thread gameThread = new Thread(this.connection);
+        gameThread.start();
+
+        JOptionPane.showMessageDialog(null, "O jogo começou!");
+        /* this.mf.setTitle("Damas - Em jogo");
+        this.mf.getConcede().setEnabled(true);
+        this.mf.getMenu().setEnabled(false);
+        this.mf.setHost(false);
+        this.mf.getCheckerBoard().rebuild(8, 8, 3);
+        this.game.resetBoard(); */
+        this.UI.startGame();
+//        GameState state = this.game.getGameState();
+//        if (this.connection.getIsMyTurn()) {
+////            this.mf.setTurn("Sua vez!");
+//        } else {
+//            this.mf.setTurn("Vez do oponente");
+//        }
+//        this.mf.clearLog();
+//        this.mf.getCheckerBoard().repaintBoard(m);
+    }
+
+    public void freeDice() {
+        this.UI.freeDice();
+    }
+
+    public void lockDice() {
+        this.UI.lockDice();
+    }
+
+    public void connectToHost(InetAddress address, int port) throws Exception {
+        this.connection.connectToHost(address, port);
+    }
+    
+    public boolean isMyTurn() {
+        return this.game.isMyTurn(this.myColor);
+    }
+
+
 }
+
+

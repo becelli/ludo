@@ -2,15 +2,15 @@ package ludo.model.socket;
 
 
 import ludo.controller.GameController;
+import ludo.model.GameState;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +19,8 @@ public class Connection implements Runnable {
     private InetAddress address;
     private int port;
     private Socket socket;
-    private ServerSocket tcpSocket;
     private Thread threadHost;
+    private boolean isMyTurn = false;
 
     public Connection(GameController controller) {
       this.controller = controller;
@@ -44,26 +44,29 @@ public class Connection implements Runnable {
 
     public void run() {
         while (true) {
-            this.recieveGameState();
+            try {
+                this.recieveGameState();
+                this.setIsMyTurn(true);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public void startConnection() {
-        try {
+    public void startConnection() throws Exception {
+            this.setIsMyTurn(true);
             this.address = InetAddress.getLocalHost();
-            this.tcpSocket = new ServerSocket(5000);
-            this.port = this.tcpSocket.getLocalPort();
-            this.socket = this.tcpSocket.accept();
-            this.tcpSocket.close();
-            // TODO: aaa
-            this.controller.playerFound();
-        } catch (IOException ex) {
-            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            ServerSocket tcpSocket = new ServerSocket(5000);
+            this.port = tcpSocket.getLocalPort();
+            this.socket = tcpSocket.accept();
+            tcpSocket.close();
+            this.controller.startGame();
+            // É o host, começa jogando
+            this.controller.freeDice();
     }
 
-
-    public void sendBoard(GameState gameState) throws Exception {
+    public void sendGameState(GameState gameState) throws Exception {
+        this.setIsMyTurn(false);
         OutputStream outputStream = this.socket.getOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(outputStream);
         out.writeObject(gameState);
@@ -72,15 +75,15 @@ public class Connection implements Runnable {
     private void recieveGameState() throws Exception {
         ObjectInputStream in = new ObjectInputStream(this.socket.getInputStream());
         GameState gameState = (GameState) in.readObject();
-        this.controller.setMove(gameState);
+        this.controller.setGameState(gameState);
+        // Recebi o tabuleiro - é a minha vez - libera o dado
+        this.controller.freeDice();
     }
 
-    public void connect() throws Exception {
-        // TODO: aaa
-        this.myTurn = false;
+    public void connectToHost(InetAddress address, int port) throws Exception {
+        this.setIsMyTurn(false);
         this.socket = new Socket(address, port);
-        // TODO: aaa
-        this.controller.playerFound();
+        this.controller.startGame();
     }
 
 
@@ -88,9 +91,9 @@ public class Connection implements Runnable {
         this.socket.close();
     }
 
-    public void host() {
-        Host h = new Host(this);
-        this.threadHost = new Thread(h);
+    public void beAHost() {
+        Host host = new Host(this);
+        this.threadHost = new Thread(host);
         this.threadHost.start();
     }
 
@@ -98,8 +101,11 @@ public class Connection implements Runnable {
         this.threadHost.interrupt();
     }
 
-    public void setMyTurn(boolean myTurn) {
-        // TODO: aaa
-        this.myTurn = myTurn;
+    public void setIsMyTurn(boolean isMyTurn) {
+        this.isMyTurn = isMyTurn;
+    }
+
+    public boolean getIsMyTurn() {
+        return this.isMyTurn;
     }
 }

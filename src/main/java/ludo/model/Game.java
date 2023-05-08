@@ -5,11 +5,9 @@ import java.util.stream.Stream;
 
 public class Game {
   private GameState gameState;
-  private Connector conn;
 
   public void createGame() {
     this.gameState = new GameState();
-    this.conn = null;
   }
 
   public GameState getGameState() {
@@ -32,6 +30,10 @@ public class Game {
     return this.gameState.getWinner() != null;
   }
 
+  public Color getWinner() {
+    return this.gameState.getWinner();
+  }
+
   public int rollDice() {
     // guardar quanto o cara rolou
     int rolledValue = Dice.roll();
@@ -40,9 +42,6 @@ public class Game {
     return rolledValue;
   }
 
-  public void nextTurn() {
-    this.gameState.nextTurn();
-  }
 
   public boolean movePawn(Pawn pawn, int steps) {
     return this.gameState.movePawn(pawn, steps);
@@ -53,5 +52,7 @@ public class Game {
         .filter(pawn -> pawn.getColor().equals(color) && pawn.canMove(steps))
         .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
   }
+
+
 
 }

@@ -178,16 +178,17 @@ public class MainWindow extends javax.swing.JFrame {
         // Now that's all done, let the player select the pawn
     }//GEN-LAST:event_rollButtonActionPerformed
 
-    private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serHostMenuItemActionPerformed
-        String localIP;
-        localIP = "123.123.123.123";
-        StringBuilder sb = new StringBuilder();
-        sb.append("Seu IP local é: ");
-        sb.append(localIP);
-        JOptionPane.showMessageDialog(this, sb.toString(), "Seu IP", JOptionPane.INFORMATION_MESSAGE);
-        // Disable all options
-        this.conectarMenuItem.setEnabled(false);
-        this.serHostMenuItem.setEnabled(false);
+    private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        try {//GEN-FIRST:event_serHostMenuItemActionPerformed
+            String localIP = String.valueOf(InetAddress.getLocalHost().getHostAddress());
+            String message = String.format("Seu IP é: %s", localIP);
+            JOptionPane.showMessageDialog(this, message, "Seu IP", JOptionPane.INFORMATION_MESSAGE);
+            // Disable all options
+            this.conectarMenuItem.setEnabled(false);
+            this.serHostMenuItem.setEnabled(false);
+        }  catch (Exception ex) {
+            System.out.println("Erro ao obter IP local");
+        }
     }//GEN-LAST:event_serHostMenuItemActionPerformed
 
     private void sobreMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sobreMenuItemActionPerformed
@@ -220,21 +221,29 @@ public class MainWindow extends javax.swing.JFrame {
                 return;
             }
             JOptionPane.showMessageDialog(this, "Conectado com sucesso.", "Conectado", JOptionPane.INFORMATION_MESSAGE);
-            // Get color
-            this.myColor = gameController.getMyColor();
-            // Print connection to pane
-            historicoPane.setText("Conectado ao servidor " + address.getHostAddress() + "\n");
-            // Enable dice rolling
-            rollButton.setEnabled(true);
-            // Disable hosting option
-            this.serHostMenuItem.setEnabled(false);
-            // Disable connection option
-            this.conectarMenuItem.setEnabled(false);
         } catch (UnknownHostException ex) {
             JOptionPane.showMessageDialog(this, "Erro na conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
         // connect to server
     }//GEN-LAST:event_conectarMenuItemActionPerformed
+
+    public void startGame() {
+        // Block host
+        serHostMenuItem.setEnabled(false);
+        conectarMenuItem.setEnabled(false);
+        // Clear historicoPane
+        historicoPane.setText("");
+        // Seta o tabuleiro para as posições iniciais
+        boardPanel.clearBoard();
+    }
+
+    public void freeDice() {
+        rollButton.setEnabled(true);
+    }
+
+    public void lockDice() {
+        rollButton.setEnabled(false);
+    }
 
     /**
      * @param args the command line arguments
