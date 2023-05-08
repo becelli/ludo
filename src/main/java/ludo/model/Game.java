@@ -5,9 +5,11 @@ import java.util.stream.Stream;
 
 public class Game {
   private GameState gameState;
+  private Connector conn;
 
   public void createGame() {
     this.gameState = new GameState();
+    this.conn = null;
   }
 
   public GameState getGameState() {
@@ -31,8 +33,10 @@ public class Game {
   }
 
   public int rollDice() {
-    int rolledValue = Dice.roll();
     // guardar quanto o cara rolou
+    int rolledValue = Dice.roll();
+    // TODO: REMOVE TESTE
+    
     return rolledValue;
   }
 

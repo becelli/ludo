@@ -6,7 +6,6 @@ import java.util.EnumMap;
 
 import ludo.controller.GameController;
 import ludo.model.Color;
-import ludo.socket.*;
 
 import javax.swing.*;
 
@@ -181,7 +180,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void serHostMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serHostMenuItemActionPerformed
         String localIP;
-        localIP = Server.getNetworkIP();
+        localIP = "123.123.123.123";
         StringBuilder sb = new StringBuilder();
         sb.append("Seu IP local é: ");
         sb.append(localIP);
