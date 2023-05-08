@@ -19,6 +19,8 @@ public class Pawn implements Serializable {
             return false;
         }
 
+        System.out.println(this.moveCount + steps);
+
         return this.moveCount + steps <= 57;
     }
 

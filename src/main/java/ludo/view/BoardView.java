@@ -135,7 +135,7 @@ public class BoardView extends JPanel {
             for(int i = 0; i < 6; i++) {
                 square = getSquare(line, col);
                 finalSquares[color.ordinal()][i] = square;
-                square.setIdentifiers(color, "F", i);
+                square.setIdentifiers(color, "F", i + 1);
                 if(i == 5) square.unsetClickable();
                 line += lineModifier;
                 col += colModifier;
@@ -279,6 +279,9 @@ public class BoardView extends JPanel {
     private SquareView codeToSquare(Color color, String code) {
         String tipo = code.substring(0, 1);
         // Resto da string é um índice
+        if(tipo == "F"){
+            System.out.println("CASA FINAL:" + tipo + " " + code.substring(1));
+        }
         int index = Integer.parseInt(code.substring(1)) - 1;
         return switch (tipo) {
             case "B" -> baseSquares[color.ordinal()][index];
@@ -313,7 +316,8 @@ public class BoardView extends JPanel {
         for(Color color : Color.values()) {
             for(String code : currentState.get(color)) {
                 square = codeToSquare(color, code);
-                System.out.print(square.getType() + square.getPos() + " ");
+                //System.out.print(square.getType() + square.getPos() + " ");
+                //System.out.println(code);
                 square.addPawn(color);
             }
         }

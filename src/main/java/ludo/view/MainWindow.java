@@ -21,6 +21,7 @@ public class MainWindow extends javax.swing.JFrame {
     private boolean timeToMove = false;
     private ArrayList<String> movablePawns;
     private String myColor;
+    private boolean BATATA = false;
 
     /**
      * Creates new form MainWindow
@@ -32,6 +33,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         // TODO: REMOVE THIS
         this.freeDice();
+        this.BATATA = true;
     }
 
     /**
@@ -78,6 +80,8 @@ public class MainWindow extends javax.swing.JFrame {
                 rollButtonActionPerformed(evt);
             }
         });
+
+        historicoScrollPane.setAutoscrolls(true);
 
         historicoPane.setEditable(false);
         historicoPane.setFocusable(false);
@@ -173,13 +177,14 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void pawnSelected(Color squareColor, String type, int pos) {
+        System.out.println(squareColor.toString() + type.toString() + pos);
         if(!this.timeToMove) return;
         // Check if the color of the square is the same as the player
         if(!Objects.equals(squareColor.toString(), this.myColor)) {
             this.invalidPawnWarning();
             return;
         };
-        System.out.println(squareColor.toString() + type.toString() + pos);
+        //System.out.println(squareColor.toString() + type.toString() + pos);
         // Compare the square code with the movable pawns locations
         String code = type + pos;
         if(type.equals("B")) code = type;
@@ -191,11 +196,13 @@ public class MainWindow extends javax.swing.JFrame {
         // get pawn code index of
         int index = this.movablePawns.indexOf(code);
         System.out.println(index + " " + this.steps);
+        if(this.BATATA) this.steps = 50;
         this.gameController.movePawn(index, this.steps);
         // TODO: time to move false
     }
 
     public void pawnSelected(String type, int pos) {
+        System.out.println(type.toString() + pos);
         if(!this.timeToMove) return;
         String code = type + pos;
         if(!this.movablePawns.contains(code)) {
@@ -218,7 +225,8 @@ public class MainWindow extends javax.swing.JFrame {
         DiceView diceView = (DiceView) diceLabel;
         diceView.setValue(this.steps);
         // update pane
-        historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + this.steps + "\n");
+        statusLabel.setText("Você rolou " + this.steps + "!");
+        //historicoPane.setText(historicoPane.getText() + "\n" + this.gameController.getMyColor().toString().toUpperCase() + " rolou " + this.steps + "\n");
 
         // TODO: Remnove this
         //this.gameController.sendGameState();

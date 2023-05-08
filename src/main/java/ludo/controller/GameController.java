@@ -70,6 +70,7 @@ public class GameController {
     }
 
     public void setGameState(GameState gameState) throws Exception {
+        // TODO: remove comments
         if (gameState == null) {
             JOptionPane.showMessageDialog(null, "O oponente desistiu! Você venceu!");
 //            this.UI.getConcede().setEnabled(false);

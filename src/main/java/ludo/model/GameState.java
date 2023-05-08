@@ -61,6 +61,7 @@ public class GameState implements Serializable {
         // if its B
         if (this.pawns[color.ordinal() * 4 + i].isAtBase()) {
           codes[i] = "B" + (baseCount--);
+          //System.out.println("ENCODANDO BASE" + codes[i]);
           continue;
         }
         codes[i] = this.pawns[color.ordinal() * 4 + i].getCode();
