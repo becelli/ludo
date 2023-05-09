@@ -74,6 +74,9 @@ public class GameController {
             this.UI.lockDice();
             this.connection.setIsMyTurn(false);
             this.UI.enableConnectAgain();
+        } else {
+            this.connection.setIsMyTurn(true);
+            this.freeDice();
         }
     }
 
