@@ -76,7 +76,6 @@ public class GameController {
             this.UI.enableConnectAgain();
         } else {
             this.connection.setIsMyTurn(true);
-            this.freeDice();
         }
     }
 
@@ -100,6 +99,7 @@ public class GameController {
             this.game.setGameState(gameState);
             this.UI.updateBoard();
             this.verifyIsThereAWinner();
+            this.freeDice();
         }
     }
 
