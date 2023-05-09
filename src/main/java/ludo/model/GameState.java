@@ -17,14 +17,6 @@ public class GameState implements Serializable {
     Stream.of(Color.values()).forEach(color -> {
       for (int i = 0; i < 4; i++) {
           this.pawns[color.ordinal() * 4 + i] = new Pawn(color);
-
-          if (color.equals(Color.RED)) {
-            if (i == 0) {
-              this.pawns[color.ordinal() * 4 + i].setMoveCount(56);
-            } else {
-                this.pawns[color.ordinal() * 4 + i].setMoveCount(57);
-            }
-          }
       }
     });
   }
