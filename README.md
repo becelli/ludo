@@ -1,18 +1,14 @@
-# ludo
+# Ludo Game Implementation
 
-Implementação do jogo Ludo, feita para a disciplina
-de Introdução a Tecnologia Java.
+This repository contains a comprehensive implementation of the classic board game Ludo. The project was developed as a part of the "Introduction to Java Technology" course.
 
-## Integrantes do grupo
+## Team Members
 
-* Daniel Henrique Serezane Pereira
-* Guilherme Eduardo Silva Batalhoti
-* Gustavo Becelli do Nacimento
+* [Daniel Serezane](https://github.com/salies)
+* [Guilherme Batalhoti](https://github.com/GuiBatalhoti)
+* [Gustavo Becelli](https://github.com/becelli)
 
-## IDE utilizada
+## Development Environment
 
-* IntelliJ IDEA Ultimate 2022.3
-
-## Versão do JDK utilizada
-
-* 17.0.6
+* **IDE:** IntelliJ IDEA Ultimate 2022.3
+* **JDK Version:** 17.0.6
